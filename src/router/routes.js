@@ -23,7 +23,10 @@ const routes = [
       {
         name: "pagos", path: 'pagos', component: () => import('pages/contabilidad/pagos.vue')
       }
-    ]
+    ],
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/inventario',
@@ -32,7 +35,10 @@ const routes = [
       {
         name: "inventario", path: 'inventario', component: () => import('pages/inventario/Transferencias.vue')
       }
-    ]
+    ],
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/config',
@@ -41,7 +47,10 @@ const routes = [
       {
         name: "usuarios", path: 'usuarios', component: () => import('pages/config/Usuarios.vue')
       }
-    ]
+    ],
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/:catchAll(.*)*',

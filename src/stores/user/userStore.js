@@ -14,7 +14,6 @@ export const useUserStore = defineStore('user', {
       await api.get('users/').then(response => {
         const usersList = response.data
         this.usersList = usersList
-        let a = 0
       })
     },
     async postUser(payload) {

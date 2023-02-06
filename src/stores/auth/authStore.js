@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { api } from 'src/boot/axios';
-
+import { Notify } from 'quasar';
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: {},
@@ -24,9 +24,17 @@ export const useAuthStore = defineStore('auth', {
       })
     },
 
-    signOut() {
-      api.defaults.headers.common.Authorization = ''
-      this.removeToken()
+    async signOut() {
+      await api.post('logout/').then(response => {
+        Notify.create({
+          type: "negative",
+          message: response.data.session_message,
+        });
+        api.defaults.headers.common.Authorization = ''
+        this.removeToken()
+      }).catch(error => {
+        console.error(error);
+      })
     },
 
     getUser(user) {

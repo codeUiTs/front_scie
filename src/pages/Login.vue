@@ -134,7 +134,7 @@ export default {
           const toPath = this.$route.query.to || "/home";
           this.$router.push(toPath);
         } catch (err) {
-          console.log(err);
+          // console.log(err);
           if (err.response.data.error) {
             $q.notify({
               type: "negative",

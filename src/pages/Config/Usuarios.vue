@@ -19,10 +19,11 @@
 </template>
 
 <script>
+import { useQuasar } from "quasar";
 import { defineComponent } from "vue";
 import GenericTable from "src/components/custom/GenericTable.vue";
-
 import { useUserStore } from "src/stores/user/userStore";
+
 export default defineComponent({
   name: "UsuariosPage",
   components: {
@@ -30,8 +31,10 @@ export default defineComponent({
   },
   setup() {
     const userStore = useUserStore();
+    const quasar = useQuasar();
     return {
       userStore,
+      quasar,
     };
   },
   data: function () {
@@ -80,9 +83,8 @@ export default defineComponent({
         await this.userStore.fetchUsers();
         this.getterData = this.userStore.getUsers;
       } catch (err) {
-        console.log(err);
         if (err.response.data.error) {
-          $q.notify({
+          this.quasar.notify({
             type: "negative",
             message: err.response.data.error,
           });
@@ -96,6 +98,12 @@ export default defineComponent({
         await this.getData();
       } catch (error) {
         console.error(error);
+        if (error.response.data.error) {
+          this.quasar.notify({
+            type: "negative",
+            message: error.response.data.error,
+          });
+        }
       }
     },
     async postRecord(ev) {
@@ -107,9 +115,8 @@ export default defineComponent({
         if (error.response.data.errors) {
           let msg = error.response.data.errors;
           let keys = Object.keys(msg);
-          console.log(keys);
           for (let index = 0; index < keys.length; index++) {
-            this.$q.notify({
+            this.quasar.notify({
               type: "negative",
               position: "bottom",
               message: `${keys[index].toUpperCase()}: ${msg[keys[index]]}`,
