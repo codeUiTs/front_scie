@@ -49,48 +49,6 @@ export const accountingList = [
   },
 ];
 
-export const payrollList = [
-  {
-    title: "payroll.incidents",
-    icon: "campaign",
-  },
-  {
-    title: "payroll.returns",
-    icon: "assignment_return",
-  },
-  {
-    title: "payroll.payrollProcessed",
-    icon: "spellcheck",
-  },
-  {
-    title: "payroll.periods",
-    icon: "history",
-  },
-  {
-    title: "payroll.matches",
-    icon: "list",
-  },
-];
-
-export const budgetList = [
-  {
-    title: "budget.budgetControl",
-    icon: "campaign",
-  },
-  {
-    title: "budget.periodControl",
-    icon: "assignment_return",
-  },
-  {
-    title: "budget.temnants",
-    icon: "spellcheck",
-  },
-  {
-    title: "budget.budgetBalance",
-    icon: "history",
-  }
-];
-
 export const inventoryList = [
   {
     title: "inventory.transfers",
@@ -118,28 +76,6 @@ export const inventoryList = [
   }
 ];
 
-export const safeguardsList = [
-  {
-    title: "safeguards.guards",
-    icon: "campaign",
-  },
-  {
-    title: "safeguards.assets",
-    icon: "assignment_return",
-  },
-  {
-    title: "safeguards.assetCategories",
-    icon: "spellcheck",
-  },
-  {
-    title: "safeguards.depreciations",
-    icon: "history",
-  },
-  {
-    title: "safeguards.assetsReport",
-    icon: "history",
-  }
-];
 
 export const configList = [
   {
