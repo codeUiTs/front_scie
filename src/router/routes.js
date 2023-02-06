@@ -21,6 +21,9 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
+        name: "facturas-cliente", path: 'facturas-cliente', component: () => import('pages/contabilidad/FacturasCliente.vue')
+      },
+      {
         name: "pagos", path: 'pagos', component: () => import('pages/contabilidad/pagos.vue')
       }
     ],

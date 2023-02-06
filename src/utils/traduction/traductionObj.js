@@ -2,6 +2,7 @@ export const accountingList = [
   {
     title: "accounting.customerInvoices",
     icon: "account_balance",
+    link: "facturas-cliente"
   },
   {
     title: "accounting.payments",
