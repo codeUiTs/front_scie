@@ -2,12 +2,12 @@ export const accountingList = [
   {
     title: "accounting.customerInvoices",
     icon: "account_balance",
-    link: "facturas-cliente"
+    link: "facturas-cliente",
   },
   {
     title: "accounting.payments",
     icon: "payments",
-    link: "pagos"
+    link: "pagos",
   },
   {
     title: "accounting.salableProducts",
@@ -61,6 +61,7 @@ export const inventoryList = [
   {
     title: "inventory.requestForSupplies",
     icon: "spellcheck",
+    link: "solicitud-suministros",
   },
   {
     title: "inventory.inventoryOutputs",
@@ -73,22 +74,19 @@ export const inventoryList = [
   {
     title: "inventory.inventoryReport",
     icon: "history",
-  }
+  },
 ];
-
 
 export const configList = [
   {
     title: "config.users",
     icon: "person",
-    link: "usuarios"
-  }
+    link: "usuarios",
+  },
 ];
 export const noMenu = [
   {
     title: "noMenu",
     icon: "warning",
   },
-]
-
-
+];
