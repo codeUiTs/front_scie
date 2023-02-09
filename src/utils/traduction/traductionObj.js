@@ -41,6 +41,7 @@ export const accountingList = [
   {
     title: "accounting.diaryBook",
     icon: "auto_stories",
+    link: "libroDiario"
   },
 
   {

@@ -29,6 +29,11 @@ const routes = [
         path: "pagos",
         component: () => import("src/pages/contabilidad/Pagos.vue"),
       },
+      {
+        name: "libroDiario", 
+        path: 'libroDiario', 
+        component: () => import('pages/contabilidad/LibroDiario.vue')
+      }
     ],
     meta: {
       requiresAuth: true,
