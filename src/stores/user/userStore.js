@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { Notify } from 'quasar';
 import { api } from 'src/boot/axios';
 
 export const useUserStore = defineStore('user', {
@@ -24,14 +25,35 @@ export const useUserStore = defineStore('user', {
     },
     async putUser(id, payload) {
       await api.put(`users/${id}/`, payload).then(response => {
-        const usersList = response.data
-        this.usersList = usersList
+        if (response.status == 200) {
+          Notify.create({
+            type: "positive",
+            message: response.data.message,
+            position: "bottom"
+          })
+        }
+      })
+    },
+    async patchUser(id, payload) {
+      await api.patch(`users/${id}/`, payload).then(response => {
+        if (response.status == 200) {
+          Notify.create({
+            type: "positive",
+            message: response.data.message,
+            position: "bottom"
+          })
+        }
       })
     },
     async deleteUser(id) {
       await api.delete(`users/${id}/`).then(response => {
-        const usersList = response.data
-        this.usersList = usersList
+        if (response.status == 200) {
+          Notify.create({
+            type: "positive",
+            message: response.data.message,
+            position: "bottom"
+          })
+        }
       })
     },
   }
