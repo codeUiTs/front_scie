@@ -17,6 +17,14 @@ export const useUserStore = defineStore('user', {
         this.usersList = usersList
       })
     },
+    async retriveUser() {
+      id = JSON.parse(localStorage.getItem("user")).id
+      await api.get(`users/${id}/`).then(response => {
+        const user = response.data
+        this.user = user
+        this.setPermissions(JSON.stringify(user.permissions))
+      })
+    },
     async postUser(payload) {
       await api.post('users/', payload).then(response => {
         const usersList = response.data
@@ -55,6 +63,9 @@ export const useUserStore = defineStore('user', {
           })
         }
       })
+    },
+    setPermissions(permissions) {
+      localStorage.setItem("permissions", permissions)
     },
   }
 });

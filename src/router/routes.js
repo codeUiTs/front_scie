@@ -30,8 +30,8 @@ const routes = [
         component: () => import("src/pages/contabilidad/Pagos.vue"),
       },
       {
-        name: "libroDiario", 
-        path: 'libroDiario', 
+        name: "libroDiario",
+        path: 'libroDiario',
         component: () => import('pages/contabilidad/LibroDiario.vue')
       }
     ],
@@ -63,14 +63,21 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {
-        name: "usuarios",
-        path: "usuarios",
+        name: "users",
+        path: "users",
         component: () => import("pages/config/Usuarios.vue"),
+        meta: {
+          requiresViewPermission: true
+        }
       },
     ],
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: "/unauthorized",
+    component: () => import("pages/ErrorNotPermission.vue"),
   },
   {
     path: "/:catchAll(.*)*",

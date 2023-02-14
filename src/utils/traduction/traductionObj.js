@@ -82,7 +82,7 @@ export const configList = [
   {
     title: "config.users",
     icon: "person",
-    link: "usuarios",
+    link: "users",
   },
 ];
 export const noMenu = [

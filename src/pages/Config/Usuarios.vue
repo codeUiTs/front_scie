@@ -9,7 +9,7 @@
       :getter-data="getterData"
       :delete-keys="deleteKeys"
       :api-route="'users/'"
-      :front-route="'/config/usuarios'"
+      :front-route="'/config/users'"
       v-on:sync:data="getData($event)"
       v-on:send:put="putRecord($event)"
       v-on:send:post="postRecord($event)"
@@ -87,6 +87,12 @@ export default defineComponent({
           this.quasar.notify({
             type: "negative",
             message: err.response.data.error,
+          });
+        }
+        if (err.response.data.detail) {
+          this.quasar.notify({
+            type: "warning",
+            message: err.response.data.detail,
           });
         }
       }
