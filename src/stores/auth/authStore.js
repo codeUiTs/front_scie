@@ -19,6 +19,8 @@ export const useAuthStore = defineStore('auth', {
       await api.post('login/', payload).then(response => {
         const token = response.data.token
         const user = response.data.user
+        const permissions = response.data.permissions
+        this.setPermissions(JSON.stringify(permissions))
         this.setToken(token)
         this.getUser(user)
       })
@@ -33,6 +35,8 @@ export const useAuthStore = defineStore('auth', {
         api.defaults.headers.common.Authorization = ''
         this.removeToken()
       }).catch(error => {
+        api.defaults.headers.common.Authorization = ''
+        this.removeToken()
         console.error(error);
       })
     },
@@ -64,6 +68,10 @@ export const useAuthStore = defineStore('auth', {
       this.isAuthenticated = true
       localStorage.setItem('token', token)
       api.defaults.headers.common.Authorization = 'Token ' + token
+    },
+
+    setPermissions(permissions) {
+      localStorage.setItem("permissions", permissions)
     },
 
     removeToken() {

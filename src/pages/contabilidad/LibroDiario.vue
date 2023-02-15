@@ -1,39 +1,39 @@
 <template>
-  <q-page padding>
+    <q-page>
     <GenericTable
       v-if="getterData.length > 0"
       ref="child"
-      :table-title="'Usuarios'"
+      :table-title="'Libro Diario'"
       :form-config="formConfig"
-      :title-export="'users'"
+      :title-export="'lbs'"
       :getter-data="getterData"
       :delete-keys="deleteKeys"
-      :api-route="'users/'"
-      :front-route="'/config/users'"
+      :api-route="'lbs/'"
+      :front-route="'/config/librosdiarios'"
       v-on:sync:data="getData($event)"
       v-on:send:put="putRecord($event)"
       v-on:send:post="postRecord($event)"
       v-on:send:del="deleteRecord($event)"
     />
-  </q-page>
+
+    </q-page>
 </template>
 
 <script>
-import { useQuasar } from "quasar";
 import { defineComponent } from "vue";
 import GenericTable from "src/components/custom/GenericTable.vue";
-import { useUserStore } from "src/stores/user/userStore";
+
 
 export default defineComponent({
-  name: "UsuariosPage",
-  components: {
-    GenericTable,
-  },
-  setup() {
-    const userStore = useUserStore();
+    name: "libroDiarioPage",
+    components: {
+        GenericTable,
+    },
+    setup() {
+    const lbStore = uselbStore();
     const quasar = useQuasar();
     return {
-      userStore,
+      lbStore,
       quasar,
     };
   },
@@ -41,35 +41,23 @@ export default defineComponent({
     return {
       data: [],
       getterData: [],
-      deleteKeys: ["password"],
+      deleteKeys: [],
       formConfig: [
         {
-          element: "name",
+          element: "diario",
           type: "text",
           required: true,
-          label: "Nombre",
+          label: "Diario",
         },
         {
-          element: "last_name",
+          element: "fecha_inicio",
           type: "text",
           required: false,
         },
         {
-          element: "username",
+          element: "fecha_fin",
           type: "text",
           required: true,
-        },
-        {
-          element: "password",
-          label: "Password",
-          type: "text",
-          required: false,
-          skipList: true,
-        },
-        {
-          element: "email",
-          type: "text",
-          required: false,
         },
       ],
     };
@@ -80,8 +68,8 @@ export default defineComponent({
   methods: {
     async getData() {
       try {
-        await this.userStore.fetchUsers();
-        this.getterData = this.userStore.getUsers;
+        await this.lbStore.fetchLbs();
+        this.getterData = this.lbStore.getLbs;
       } catch (err) {
         if (err.response.data.error) {
           this.quasar.notify({
@@ -89,18 +77,12 @@ export default defineComponent({
             message: err.response.data.error,
           });
         }
-        if (err.response.data.detail) {
-          this.quasar.notify({
-            type: "warning",
-            message: err.response.data.detail,
-          });
-        }
       }
     },
     async putRecord(ev) {
       console.log(ev);
       try {
-        await this.userStore.putUser(ev.rows.id, ev.formData);
+        await this.lbStore.putLb(ev.rows.id, ev.formData);
         await this.getData();
       } catch (error) {
         console.error(error);
@@ -114,7 +96,7 @@ export default defineComponent({
     },
     async postRecord(ev) {
       try {
-        await this.userStore.postUser(ev);
+        await this.lbStore.postLb(ev);
         this.$refs.child.cancel();
         await this.getData();
       } catch (error) {
@@ -133,7 +115,7 @@ export default defineComponent({
     },
     async deleteRecord(ev) {
       try {
-        await this.userStore.deleteUser(ev);
+        await this.lbStore.deleteLb(ev);
         this.$refs.child.cancel();
         this.getData();
       } catch (error) {
