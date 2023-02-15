@@ -14,6 +14,7 @@
       v-on:send:post="postRecord($event)"
       v-on:send:del="deleteRecord($event)"
     />
+    <SolicitudSuministrosTable :rows="rows"> </SolicitudSuministrosTable>
   </q-page>
 </template>
 
@@ -22,11 +23,13 @@ import { useQuasar } from "quasar";
 import { defineComponent } from "vue";
 import GenericTable from "src/components/custom/GenericTable.vue";
 import { useSolicitudStore } from "src/stores/solicitudSuministros/solicitudStore";
+import SolicitudSuministrosTable from "src/components/custom/SolicitudSuministrosTable.vue";
 
 export default defineComponent({
   name: "SolicitudPage",
   components: {
     GenericTable,
+    SolicitudSuministrosTable,
   },
   setup() {
     const solicitudStore = useSolicitudStore();
@@ -39,32 +42,15 @@ export default defineComponent({
   data: function () {
     return {
       data: [],
+      rows: [],
       getterData: [],
       deleteKeys: ["password"],
       formConfig: [
-        {
-          element: "fecha",
-          type: "text",
-          required: true,
-          label: "Fecha",
-        },
-        {
-          element: "folio",
-          type: "text",
-          required: false,
-          label: "Folio",
-        },
         {
           element: "area_solicitante",
           type: "text",
           required: true,
           label: "Área solicitante",
-        },
-        {
-          element: "departamento_solicitante",
-          label: "Departamento solicitante",
-          type: "text",
-          required: false,
         },
         {
           element: "ubicacion",
@@ -73,22 +59,67 @@ export default defineComponent({
           label: "Ubicación",
         },
         {
+          element: "fecha_estimada",
+          type: "text",
+          required: true,
+          label: "Fecha estimada de entrega",
+        },
+        {
           element: "fecha_salida",
           type: "text",
-          required: false,
+          required: true,
           label: "Fecha de salida",
+        },
+        {
+          element: "pendiente",
+          type: "checkbox",
+          required: false,
+          label: "Pendiente",
+        },
+
+        {
+          element: "area_destino",
+          label: "Área destino",
+          type: "text",
+          required: false,
+        },
+
+        {
+          element: "tipo",
+          type: "text",
+          required: false,
+          label: "Tipo",
+        },
+        {
+          element: "entrega",
+          type: "select",
+          options: ["1", "2", "3"],
+          required: false,
+          label: "Entrega",
+        },
+        {
+          element: "departamento_solicitante",
+          type: "text",
+          required: false,
+          label: "Departamento solicitante",
+        },
+        {
+          element: "edificio",
+          type: "text",
+          required: false,
+          label: " Edificio",
+        },
+        {
+          element: "fecha_solicitud",
+          type: "text",
+          required: false,
+          label: "Fecha solicitud",
         },
         {
           element: "fecha_entregado",
           type: "text",
           required: false,
           label: "Fecha de entregado",
-        },
-        {
-          element: "estado",
-          type: "text",
-          required: false,
-          label: "Estado",
         },
       ],
     };
@@ -101,6 +132,7 @@ export default defineComponent({
       try {
         await this.useSolicitudStore.fetchSolicitud();
         this.getterData = this.useSolicitudStore.getSolicitud;
+        this.rows = this.solicitudStore.getSolicitud;
       } catch (err) {
         if (err.response.data.error) {
           this.quasar.notify({
