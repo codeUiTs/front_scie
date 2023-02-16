@@ -9,7 +9,13 @@
       :filter="filter"
     >
       <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+        <q-input
+          borderless
+          dense
+          debounce="300"
+          v-model="filter"
+          placeholder="Buscar"
+        >
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -22,7 +28,14 @@
           @click="exportTable(genericColumns, genericRows, titleExport)"
         />
         <q-btn flat color="accent" icon="sync" size="sm" @click="syncData" />
-        <q-btn flat rounded color="accent" icon="add" size="sm" @click="create = true" />
+        <q-btn
+          flat
+          rounded
+          color="accent"
+          icon="add"
+          size="sm"
+          @click="create = true"
+        />
       </template>
       <template v-slot:body="props">
         <q-tr clickable :props="props" @click="SelectItem(props.row)">
@@ -91,7 +104,9 @@
               <q-list>
                 <q-item
                   clickable
-                  @click="exportTable(genericColumns, [genericRows], titleExport)"
+                  @click="
+                    exportTable(genericColumns, [genericRows], titleExport)
+                  "
                 >
                   <q-item-section>Exportar</q-item-section>
                 </q-item>
@@ -117,7 +132,9 @@
                     dense
                     :label="`${item.label} *`"
                     lazy-rules
-                    :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Campo requerido',
+                    ]"
                   />
                   <q-input
                     v-else
@@ -141,7 +158,9 @@
                     emit-value
                     map-options
                     lazy-rules
-                    :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Campo requerido',
+                    ]"
                     style="width: 250px"
                   />
                   <q-select
@@ -165,7 +184,9 @@
                     dense
                     :label="`${item.label} *`"
                     lazy-rules
-                    :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Campo requerido',
+                    ]"
                   />
                   <q-checkbox
                     v-else
@@ -221,7 +242,13 @@
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="Cancelar" color="primary" v-close-popup />
-          <q-btn flat label="Continuar" color="red" @click="deleteItem()" v-close-popup />
+          <q-btn
+            flat
+            label="Continuar"
+            color="red"
+            @click="deleteItem()"
+            v-close-popup
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
