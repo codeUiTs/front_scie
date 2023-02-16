@@ -33,6 +33,11 @@ const routes = [
         name: "libroDiario",
         path: 'libroDiario',
         component: () => import('pages/contabilidad/LibroDiario.vue')
+      },
+      {
+        name: "ProductosVendibles",
+        path: "ProductosVendibles",
+        component: () => import("src/pages/contabilidad/ProductosVendibles.vue"),
       }
     ],
     meta: {
