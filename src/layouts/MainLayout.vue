@@ -55,9 +55,15 @@
         </div>
       </q-toolbar>
       <q-tabs align="left">
-        <q-route-tab to="/contabilidad" :label="$t('tabsMenu.accounting')" />
-        <q-route-tab to="/inventario" :label="$t('tabsMenu.inventory')" />
-        <q-route-tab to="/config" :label="$t('tabsMenu.config')" />
+        <q-route-tab
+          @click="selectMenu('contabilidad')"
+          :label="$t('tabsMenu.accounting')"
+        />
+        <q-route-tab
+          @click="selectMenu('inventario')"
+          :label="$t('tabsMenu.inventory')"
+        />
+        <q-route-tab @click="selectMenu('config')" :label="$t('tabsMenu.config')" />
       </q-tabs>
     </q-header>
 
@@ -100,17 +106,18 @@ export default {
     const authStore = useAuthStore();
 
     const route = useRoute();
+    let routeName = ref("home");
     let essentialLinks = ref(noMenu);
     watch(
-      () => route.path,
-      (routeNme) => {
-        if (routeNme == "/contabilidad") {
+      () => routeName.value,
+      (route) => {
+        if (route == "contabilidad") {
           essentialLinks.value = accountingList;
           leftDrawerOpen.value = true;
-        } else if (routeNme == "/inventario") {
+        } else if (route == "inventario") {
           essentialLinks.value = inventoryList;
           leftDrawerOpen.value = true;
-        } else if (routeNme == "/config") {
+        } else if (route == "config") {
           essentialLinks.value = configList;
           leftDrawerOpen.value = true;
         } else {
@@ -121,6 +128,7 @@ export default {
 
     return {
       route,
+      routeName,
       authStore,
       essentialLinks,
       leftDrawerOpen,
@@ -134,6 +142,9 @@ export default {
     setLanguaje() {
       let lang = this.$root.$i18n.locale == "en-US" ? "es-MX" : "en-US";
       this.$root.$i18n.locale = lang;
+    },
+    selectMenu(route) {
+      this.routeName = route;
     },
     logout() {
       this.authStore.signOut();

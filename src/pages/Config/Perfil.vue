@@ -168,13 +168,20 @@
 </template>
 
 <script>
-// import { mapActions } from "vuex";
 import { Notify } from "quasar";
 import { defineComponent } from "vue";
 import { ref } from "vue";
+import { useAuthStore } from "src/stores/auth/authStore";
 
 export default defineComponent({
   name: "UserProfile",
+  setup() {
+    const authStore = useAuthStore();
+
+    return {
+      authStore,
+    };
+  },
   data() {
     return {
       image: ref(null),
@@ -192,19 +199,7 @@ export default defineComponent({
       password_dict: {},
     };
   },
-  // mounted() {
-  //   this.getUser();
-  // },
   methods: {
-    // ...mapActions("auth", ["sendLogoutRequest"]),
-    // ...mapActions("configuracion", [
-    //   "postUsuarioImage",
-    //   "putProfile",
-    //   "putUsuario",
-    //   "updatePassword",
-    //   "fetchusuarioId",
-    // ]),
-
     setUser() {
       let userID = sessionStorage.getItem("userId");
       this.$store.dispatch("configuracion/fetchUsuarioId", userID).then(() => {
@@ -348,12 +343,8 @@ export default defineComponent({
       }
     },
     logout() {
-      let X_Token = sessionStorage.getItem("X_Token");
-      this.sendLogoutRequest(X_Token).then(() => {
-        this.$router.push({
-          path: "/login",
-        });
-      });
+      this.authStore.signOut();
+      this.$router.push("/login");
     },
   },
 });

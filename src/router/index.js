@@ -2,7 +2,6 @@ import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 import { useAuthStore } from 'src/stores/auth/authStore'
-import { useUserStore } from 'src/stores/user/userStore'
 
 export default route(function () {
   const createHistory = process.env.SERVER
@@ -10,7 +9,7 @@ export default route(function () {
     : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory)
   const getPermissions = (routeName) => {
     let permissions = JSON.parse(localStorage.getItem("permissions"));
-    if (permissions.length > 0) {
+    if (permissions != null && permissions.length > 0) {
       for (const iterator of permissions) {
         let it = iterator.split('.')
         if (it[0] == routeName) {

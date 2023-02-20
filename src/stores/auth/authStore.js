@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
     async signOut() {
       await api.post('logout/').then(response => {
         Notify.create({
-          type: "negative",
+          type: "positive",
           message: response.data.session_message,
         });
         api.defaults.headers.common.Authorization = ''
