@@ -86,7 +86,7 @@ export default defineComponent({
   methods: {
     async getData() {
       try {
-        await this.fcStore.fetchUsers();
+        await this.fcStore.fetchfcs();
         this.getterData = this.fcStore.getfcs;
       } catch (err) {
         if (err.response.data.error) {

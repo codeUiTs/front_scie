@@ -172,14 +172,17 @@ import { Notify } from "quasar";
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useAuthStore } from "src/stores/auth/authStore";
+import { useUserStore } from "src/stores/user/userStore";
 
 export default defineComponent({
   name: "UserProfile",
   setup() {
     const authStore = useAuthStore();
+    const userStore = useUserStore();
 
     return {
       authStore,
+      userStore,
     };
   },
   data() {
@@ -199,31 +202,17 @@ export default defineComponent({
       password_dict: {},
     };
   },
+  mounted() {
+    this.setUser();
+  },
   methods: {
     setUser() {
-      let userID = sessionStorage.getItem("userId");
-      this.$store.dispatch("configuracion/fetchUsuarioId", userID).then(() => {
-        let item = JSON.stringify(
-          this.$store.getters["configuracion/getterUsuarioId"][0]
-        );
-        let user = JSON.parse(item);
-        this.user.name = user.name;
-        this.user.email = user.email;
-        sessionStorage.setItem("userName", user.name);
-        sessionStorage.setItem("userEmail", user.email);
-      });
+      let user = JSON.parse(localStorage.getItem("user"));
+      this.user.name = user.name;
+      this.user.email = user.email;
     },
-    getUser() {
-      this.setUser();
-      let urlsplit = localStorage.getItem("auth_url").split("/api/")[0];
-      let avatarName = sessionStorage.getItem("userAvatar");
-      if (avatarName) {
-        this.user.avatar = urlsplit + "/images/users/" + avatarName;
-      }
-    },
-
     createOf() {
-      this.getUser();
+      this.setUser();
       this.edit = true;
     },
 
@@ -289,14 +278,13 @@ export default defineComponent({
       }
     },
 
-    updatePass() {
+    async updatePass() {
       let formData = new FormData();
-      let userID = sessionStorage.getItem("userId");
-      formData.append("id", userID);
-      formData.append("currentPassword", this.user.currentPass);
-      formData.append("newPassword", this.user.newPass);
+      let id = JSON.parse(localStorage.getItem("user")).id;
+      formData.append("password", this.user.newPass);
+      formData.append("password2", this.user.confirmPass);
       try {
-        this.updatePassword(formData);
+        await this.userStore.setPassword(id, formData);
       } catch (error) {
         console.error(error);
       }

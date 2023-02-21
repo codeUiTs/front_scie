@@ -50,9 +50,14 @@ export const useUserStore = defineStore('user', {
         message: "Cargando...",
       });
       await api.post('users/', payload).then(response => {
-        const usersList = response.data
-        this.usersList = usersList
         Loading.hide()
+        if (response.status == 201) {
+          Notify.create({
+            type: "positive",
+            message: response.data.message,
+            position: "bottom"
+          })
+        }
       }).catch((error) => {
         Loading.hide()
         return Promise.reject(error)
@@ -113,6 +118,24 @@ export const useUserStore = defineStore('user', {
           })
         }
         Loading.hide()
+      }).catch((error) => {
+        Loading.hide()
+        return Promise.reject(error)
+      })
+    },
+    async setPassword(id, payload) {
+      Loading.show({
+        spinner: QSpinnerBars,
+        spinnerColor: "accent",
+        message: "Cargando...",
+      });
+      await api.post(`set-password/${id}/`, payload).then(response => {
+        Loading.hide()
+        Notify.create({
+          type: "positive",
+          message: response.data.message,
+          position: "bottom"
+        })
       }).catch((error) => {
         Loading.hide()
         return Promise.reject(error)
