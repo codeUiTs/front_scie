@@ -1,5 +1,5 @@
 <template>
-    <q-page>
+  <q-page>
     <GenericTable
       v-if="getterData.length > 0"
       ref="child"
@@ -8,28 +8,28 @@
       :title-export="'lbs'"
       :getter-data="getterData"
       :delete-keys="deleteKeys"
-      :api-route="'lbs/'"
+      :api-route="'libroDiario/'"
       :front-route="'/config/librosdiarios'"
       v-on:sync:data="getData($event)"
       v-on:send:put="putRecord($event)"
       v-on:send:post="postRecord($event)"
       v-on:send:del="deleteRecord($event)"
     />
-
-    </q-page>
+  </q-page>
 </template>
 
 <script>
 import { defineComponent } from "vue";
+import { useQuasar } from "quasar";
 import GenericTable from "src/components/custom/GenericTable.vue";
-
+import { uselbStore } from "src/stores/libroDiario/lbStore";
 
 export default defineComponent({
-    name: "libroDiarioPage",
-    components: {
-        GenericTable,
-    },
-    setup() {
+  name: "libroDiarioPage",
+  components: {
+    GenericTable,
+  },
+  setup() {
     const lbStore = uselbStore();
     const quasar = useQuasar();
     return {

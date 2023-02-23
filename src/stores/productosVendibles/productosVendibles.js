@@ -11,19 +11,19 @@ export const useProductosVendiblesStore = defineStore('ProductosVendibles', {
   },
   actions: {
     async fetchProductosVendibless() {
-      await api.get('ProductosVendibless/').then(response => {
+      await api.get('productosVendibles/').then(response => {
         const ProductosVendiblessList = response.data
         this.ProductosVendiblessList = ProductosVendiblessList
       })
     },
     async postProductosVendibles(payload) {
-      await api.post('ProductosVendibless/', payload).then(response => {
+      await api.post('productosVendibles/', payload).then(response => {
         const ProductosVendiblessList = response.data
         this.ProductosVendiblessList = ProductosVendiblessList
       })
     },
     async putProductosVendibles(id, payload) {
-      await api.put(`ProductosVendibless/${id}/`, payload).then(response => {
+      await api.put(`productosVendibles/${id}/`, payload).then(response => {
         const ProductosVendiblessList = response.data
         this.ProductosVendiblessList = ProductosVendiblessList
       })
@@ -40,7 +40,7 @@ export const useProductosVendiblesStore = defineStore('ProductosVendibles', {
       })
     },
     async deleteProductosVendibles(id) {
-      await api.delete(`ProductosVendibless/${id}/`).then(response => {
+      await api.delete(`productosVendibles/${id}/`).then(response => {
         const ProductosVendiblessList = response.data
         this.ProductosVendiblessList = ProductosVendiblessList
       })

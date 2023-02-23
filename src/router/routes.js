@@ -30,8 +30,13 @@ const routes = [
             component: () => import('pages/contabilidad/LibroDiario.vue')
           },
           {
-            name: "ProductosVendibles",
-            path: "ProductosVendibles",
+            name: "libroMayor",
+            path: 'libroMayor',
+            component: () => import('pages/contabilidad/LibroMayor.vue')
+          },
+          {
+            name: "productosVendibles",
+            path: "productosVendibles",
             component: () => import("src/pages/contabilidad/ProductosVendibles.vue"),
           }
         ]

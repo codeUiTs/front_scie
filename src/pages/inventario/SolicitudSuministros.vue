@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page>
     <GenericTable
       v-if="getterData.length > 0"
       ref="child"
@@ -9,12 +9,13 @@
       :getter-data="getterData"
       :api-route="'solicitud-suministros/'"
       :front-route="'/inventario/solicitud-suministros'"
-      v-on:sync:data="syncData($event)"
+      v-on:sync:data="getData($event)"
       v-on:send:put="putRecord($event)"
       v-on:send:post="postRecord($event)"
       v-on:send:del="deleteRecord($event)"
+      v-on:enable:create="create = $event"
     />
-    <SolicitudSuministrosTable :rows="rows"> </SolicitudSuministrosTable>
+    <SolicitudSuministrosTable v-show="create" :rows="rows"> </SolicitudSuministrosTable>
   </q-page>
 </template>
 
@@ -22,8 +23,8 @@
 import { useQuasar } from "quasar";
 import { defineComponent } from "vue";
 import GenericTable from "src/components/custom/GenericTable.vue";
-import { useSolicitudStore } from "src/stores/solicitudSuministros/solicitudStore";
 import SolicitudSuministrosTable from "src/components/custom/SolicitudSuministrosTable.vue";
+import { useSolicitudStore } from "src/stores/solicitudSuministros/solicitudStore";
 
 export default defineComponent({
   name: "SolicitudPage",
@@ -41,16 +42,17 @@ export default defineComponent({
   },
   data: function () {
     return {
+      create: false,
       data: [],
       rows: [],
       getterData: [],
       deleteKeys: ["password"],
       formConfig: [
         {
-          element: "area_solicitante",
+          element: "producto_solicitado",
           type: "text",
           required: true,
-          label: "Área solicitante",
+          label: "Producto solicitado",
         },
         {
           element: "ubicacion",
@@ -91,11 +93,14 @@ export default defineComponent({
           label: "Tipo",
         },
         {
-          element: "entrega",
+          element: "estado",
           type: "select",
-          options: ["1", "2", "3"],
+          options: [
+            { value: "pendiente", label: "Pendiente" },
+            { value: "entregado", label: "Entregado" },
+          ],
           required: false,
-          label: "Entrega",
+          label: "Estado",
         },
         {
           element: "departamento_solicitante",
@@ -130,8 +135,8 @@ export default defineComponent({
   methods: {
     async getData() {
       try {
-        await this.useSolicitudStore.fetchSolicitud();
-        this.getterData = this.useSolicitudStore.getSolicitud;
+        await this.solicitudStore.fetchSolicitud();
+        this.getterData = this.solicitudStore.getSolicitud;
         this.rows = this.solicitudStore.getSolicitud;
       } catch (err) {
         if (err.response.data.error) {
@@ -140,12 +145,13 @@ export default defineComponent({
             message: err.response.data.error,
           });
         }
+        throw err;
       }
     },
     async putRecord(ev) {
       console.log(ev);
       try {
-        await this.useSolicitudStore.putSolicitud(ev.rows.id, ev.formData);
+        await this.solicitudStore.putSolicitud(ev.rows.id, ev.formData);
         await this.getData();
       } catch (error) {
         console.error(error);
@@ -159,7 +165,7 @@ export default defineComponent({
     },
     async postRecord(ev) {
       try {
-        await this.useSolicitudStore.postSolicitud(ev);
+        await this.solicitudStore.postSolicitud(ev);
         this.$refs.child.cancel();
         await this.getData();
       } catch (error) {
@@ -178,7 +184,7 @@ export default defineComponent({
     },
     async deleteRecord(ev) {
       try {
-        await this.useSolicitudStore.deleteSolicitud(ev);
+        await this.solicitudStore.deleteSolicitud(ev);
         this.$refs.child.cancel();
         this.getData();
       } catch (error) {

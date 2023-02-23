@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      title="Treats"
+      title="Solicitudes"
       :rows="rows"
       :columns="columns"
       row-key="name"
@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, defineComponent } from "vue";
 
 const columns = [
   {
@@ -173,7 +173,7 @@ const columns = [
 ];
 
 export default defineComponent({
-  name: "SolicitudSuministrosTable",
+  name: "solicitud-suministros-table",
   props: {
     rows: Array,
     getterData: Object,

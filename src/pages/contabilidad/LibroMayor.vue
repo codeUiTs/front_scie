@@ -1,9 +1,9 @@
 <template>
-  <div class="q-pa-md q-gutter-sm">
-    <q-btn label="Clickeame o sí!" color="primary" @click="toolbar = true" />
+  <q-page class="q-pa-md q-gutter-sm">
+    <q-btn label="Clickeame o sí!" color="accent" @click="toolbar = true" />
 
     <q-dialog v-model="toolbar" full-width>
-      <q-card>
+      <q-card class="q-pa-md">
         <q-toolbar>
           <q-toolbar-title
             ><span class="text-weight-bold">Libro Mayor</span>
@@ -62,21 +62,11 @@
             <div class="col-1 text-h6">De fecha</div>
             <div class="col-1">|</div>
             <div class="col-3">
-              <q-select
-                outlined
-                v-model="model"
-                :options="options"
-                label="15/02/23"
-              />
+              <q-select outlined v-model="model" :options="options" label="15/02/23" />
             </div>
             <div class="col-1"><p class="text-center">a</p></div>
             <div class="col-3">
-              <q-select
-                outlined
-                v-model="model"
-                :options="options"
-                label="15/02/23"
-              />
+              <q-select outlined v-model="model" :options="options" label="15/02/23" />
             </div>
           </div>
           <br />
@@ -103,11 +93,11 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-  </div>
+  </q-page>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref } from "vue";
 
 export default {
   setup() {

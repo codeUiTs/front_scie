@@ -12,6 +12,7 @@ export const accountingList = [
   {
     title: "accounting.salableProducts",
     icon: "inventory",
+    link: "productosVendibles"
   },
   {
     title: "accounting.supplierInvoices",
@@ -36,6 +37,7 @@ export const accountingList = [
   {
     title: "accounting.ledger",
     icon: "menu_book",
+    link: "libroMayor"
   },
 
   {

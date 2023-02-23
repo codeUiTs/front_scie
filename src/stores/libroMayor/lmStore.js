@@ -11,25 +11,25 @@ export const uselmStore = defineStore('lm', {
   },
   actions: {
     async fetchLms() {
-      await api.get('lms/').then(response => {
+      await api.get('libroMayor/').then(response => {
         const lmsList = response.data
         this.lmsList = lmsList
       })
     },
     async postLm(payload) {
-      await api.post('lms/', payload).then(response => {
+      await api.post('libroMayor/', payload).then(response => {
         const lmsList = response.data
         this.lmsList = lmsList
       })
     },
     async putLm(id, payload) {
-      await api.put(`lms/${id}/`, payload).then(response => {
+      await api.put(`libroMayor/${id}/`, payload).then(response => {
         const lmsList = response.data
         this.lmsList = lmsList
       })
     },
     async deleteLm(id) {
-      await api.delete(`lms/${id}/`).then(response => {
+      await api.delete(`libroMayor/${id}/`).then(response => {
         const lmsList = response.data
         this.lmsList = lmsList
       })

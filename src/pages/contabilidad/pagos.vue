@@ -8,7 +8,7 @@
       :title-export="'users'"
       :getter-data="getterData"
       :api-route="'pagos/'"
-      :front-route="'/config/pagos'"
+      :front-route="'/contabilidad/pagos'"
       v-on:sync:data="getData($event)"
       v-on:send:put="putRecord($event)"
       v-on:send:post="postRecord($event)"
@@ -21,7 +21,7 @@
 import { useQuasar } from "quasar";
 import { defineComponent } from "vue";
 import GenericTable from "src/components/custom/GenericTable.vue";
-import { usepagoStore } from "src/stores/pago/pagoStore.js";
+import { usepagoStore } from "src/stores/pagos/pagoStore";
 
 export default defineComponent({
   name: "PagosPage",
@@ -55,7 +55,6 @@ export default defineComponent({
           required: false,
           skipList: false,
           label: "Diario de Pago",
-
         },
         {
           element: "destino",
@@ -151,5 +150,3 @@ export default defineComponent({
   },
 });
 </script>
-
-
