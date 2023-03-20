@@ -12,16 +12,26 @@ const routes = [
       { path: "/perfil", component: () => import("pages/Config/Perfil.vue") },
       {
         path: "/contabilidad",
-        redirect: "facturas-cliente",
+        redirect: "facturasCliente",
         children: [
           {
-            name: "facturas-cliente",
-            path: "facturas-cliente",
+            name: "facturaCliente",
+            path: "facturaCliente",
             component: () => import("pages/contabilidad/FacturasCliente.vue"),
           },
           {
-            name: "pagos",
-            path: "pagos",
+            name: "facturaProveedor",
+            path: "facturaProveedor",
+            component: () => import("pages/contabilidad/FacturasProveedor.vue"),
+          },
+          {
+            name: "proveedor",
+            path: "proveedor",
+            component: () => import("pages/contabilidad/Proveedores.vue"),
+          },
+          {
+            name: "pago",
+            path: "pago",
             component: () => import("src/pages/contabilidad/Pagos.vue"),
           },
           {
@@ -35,11 +45,24 @@ const routes = [
             component: () => import('pages/contabilidad/LibroMayor.vue')
           },
           {
-            name: "productosVendibles",
-            path: "productosVendibles",
+            name: "productoVendible",
+            path: "productoVendible",
             component: () => import("src/pages/contabilidad/ProductosVendibles.vue"),
-          }
-        ]
+          },
+          {
+            name: "reporteFinanciero",
+            path: "reporteFinanciero",
+            component: () => import("pages/contabilidad/ReporteFinanciero.vue"),
+          },
+          {
+            name: "diarioVentasCompras",
+            path: "diarioVentasCompras",
+            component: () => import("pages/contabilidad/DiarioVentasCompras.vue"),
+          },
+        ],
+        meta: {
+          requiresViewPermission: true
+        }
       },
       {
         path: "/inventario",
@@ -51,19 +74,24 @@ const routes = [
             component: () => import("pages/inventario/Transferencias.vue"),
           },
           {
-            name: "solicitud-suministros",
-            path: "solicitud-suministros",
+            name: "solicitudSuministro",
+            path: "solicitudSuministro",
             component: () => import("pages/inventario/SolicitudSuministros.vue"),
+          },
+          {
+            name: "producto",
+            path: "producto",
+            component: () => import("pages/inventario/Productos.vue"),
           },
         ]
       },
       {
         path: "/config",
-        redirect: "users",
+        redirect: "user",
         children: [
           {
-            name: "users",
-            path: "users",
+            name: "user",
+            path: "user",
             component: () => import("pages/config/Usuarios.vue"),
             meta: {
               requiresViewPermission: true

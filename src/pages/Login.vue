@@ -74,11 +74,11 @@
                   type="submit"
                   rounded
                 ></q-btn>
-                <div class="text-center q-mt-sm q-gutter-lg">
+                <!-- <div class="text-center q-mt-sm q-gutter-lg">
                   <router-link class="text-accent" to="/login">{{
                     $t("loginForm.forgot")
                   }}</router-link>
-                </div>
+                </div> -->
               </div>
             </q-form>
           </q-card-section>
@@ -134,7 +134,6 @@ export default {
           const toPath = this.$route.query.to || "/home";
           this.$router.push(toPath);
         } catch (err) {
-          // console.log(err);
           if (err.response.data.error) {
             $q.notify({
               type: "negative",

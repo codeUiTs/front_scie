@@ -2,26 +2,28 @@ export const accountingList = [
   {
     title: "accounting.customerInvoices",
     icon: "account_balance",
-    link: "facturas-cliente",
+    link: "facturaCliente",
   },
   {
     title: "accounting.payments",
     icon: "payments",
-    link: "pagos",
+    link: "pago",
   },
   {
     title: "accounting.salableProducts",
     icon: "inventory",
-    link: "productosVendibles"
+    link: "productoVendible"
   },
   {
     title: "accounting.supplierInvoices",
     icon: "receipt_long",
+    link: "facturaProveedor",
   },
 
   {
     title: "accounting.suppliers",
     icon: "forklift",
+    link: "proveedor",
   },
 
   {
@@ -32,6 +34,7 @@ export const accountingList = [
   {
     title: "accounting.financialReport",
     icon: "summarize",
+    link: "reporteFinanciero",
   },
 
   {
@@ -49,6 +52,7 @@ export const accountingList = [
   {
     title: "accounting.spJournal",
     icon: "request_quote",
+    link: "diarioVentasCompras",
   },
 ];
 
@@ -60,23 +64,24 @@ export const inventoryList = [
   {
     title: "inventory.products",
     icon: "assignment_return",
+    link: "producto",
   },
   {
     title: "inventory.requestForSupplies",
     icon: "spellcheck",
-    link: "solicitud-suministros",
+    link: "solicitudSuministro",
   },
   {
     title: "inventory.inventoryOutputs",
-    icon: "history",
+    icon: "door_sliding",
   },
   {
     title: "inventory.planner",
-    icon: "history",
+    icon: "pending_actions",
   },
   {
     title: "inventory.inventoryReport",
-    icon: "history",
+    icon: "summarize",
   },
 ];
 
@@ -84,7 +89,7 @@ export const configList = [
   {
     title: "config.users",
     icon: "person",
-    link: "users",
+    link: "user",
   },
 ];
 export const noMenu = [

@@ -7,6 +7,8 @@
       :columns="genericColumns"
       row-key="id"
       :filter="filter"
+      no-data-label="I didn't find anything for you"
+      no-results-label="The filter didn't uncover any results"
     >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
@@ -69,6 +71,13 @@
             </div>
           </q-td>
         </q-tr>
+      </template>
+      <template v-slot:no-data="{ icon, message, filter }">
+        <div class="full-width row flex-center text-accent q-gutter-sm">
+          <q-icon size="2em" name="sentiment_dissatisfied" />
+          <span> Well this is sad... {{ message }} </span>
+          <q-icon size="2em" :name="filter ? 'filter_b_and_w' : icon" />
+        </div>
       </template>
     </q-table>
     <q-card v-show="create" class="my-card">

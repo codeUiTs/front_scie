@@ -12,17 +12,18 @@ export default route(function () {
     if (permissions != null && permissions.length > 0) {
       for (const iterator of permissions) {
         let it = iterator.split('.')
-        if (it[0] == routeName) {
+        if (it[0].toLowerCase() == routeName) {
           let view = it[1].split('_');
-          if (view[0] == 'view' && view[1] == routeName.substring(0, routeName.length - 1)) {
+          if (view[0].toLowerCase() == 'view' && view[1] == routeName) {
             return true
           }
         }
       }
     }
     return false
-  }
 
+  }
+  9
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
     routes,
@@ -30,7 +31,7 @@ export default route(function () {
     history: createHistory(process.env.VUE_ROUTER_BASE)
 
   })
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore()
     if (to.matched.some((record) => record.meta.requiresAuth) && !authStore.getIsAuthenticated) {
       next({
@@ -38,7 +39,8 @@ export default route(function () {
         query: { to: to.path }
       });
     } else {
-      let access = getPermissions(to.name)
+      let rte = to.name != undefined ? to.name.toLowerCase() : "home"
+      let access = await getPermissions(rte)
       if (!to.meta.requiresViewPermission) {
         next();
       } else if (to.meta.requiresViewPermission) {

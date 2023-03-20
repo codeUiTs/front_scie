@@ -3,12 +3,12 @@
     <GenericTable
       v-if="getterData.length > 0"
       ref="child"
-      :table-title="'Facturas Cliente'"
+      :table-title="'Facturas Proveedor'"
       :form-config="formConfig"
-      :title-export="'facturas-cliente'"
+      :title-export="'facturas-proveedor'"
       :getter-data="getterData"
-      :api-route="'facturas-cliente/'"
-      :front-route="'/contabilidad/facturaCliente'"
+      :api-route="'facturas-proveedor/'"
+      :front-route="'/contabilidad/facturas-proveedor'"
       v-on:sync:data="getData($event)"
       v-on:send:put="putRecord($event)"
       v-on:send:post="postRecord($event)"
@@ -23,7 +23,7 @@ import { useQuasar } from "quasar";
 import { usefcStore } from "src/stores/facturasCliente/fcStore";
 
 export default defineComponent({
-  name: "FacturasCliente",
+  name: "FacturasProveedor",
   components: {
     GenericTable,
   },
