@@ -1,14 +1,13 @@
 <template>
   <q-page>
     <GenericTable
-      v-if="getterData.length > 0"
       ref="child"
-      :table-title="'Solicitud de Suministros'"
+      :table-title="$t('inventory.requestForSupplies')"
       :form-config="formConfig"
       :title-export="'solicitudSuministros'"
       :getter-data="getterData"
       :api-route="'solicitud-suministros/'"
-      :front-route="'/inventario/solicitud-suministros'"
+      :front-route="'/inventario/solicitudSuministro'"
       v-on:sync:data="getData($event)"
       v-on:send:put="putRecord($event)"
       v-on:send:post="postRecord($event)"
@@ -46,7 +45,6 @@ export default defineComponent({
       data: [],
       rows: [],
       getterData: [],
-      deleteKeys: ["password"],
       formConfig: [
         {
           element: "producto_solicitado",
@@ -62,13 +60,13 @@ export default defineComponent({
         },
         {
           element: "fecha_estimada",
-          type: "text",
+          type: "date",
           required: true,
           label: "Fecha estimada de entrega",
         },
         {
           element: "fecha_salida",
-          type: "text",
+          type: "date",
           required: true,
           label: "Fecha de salida",
         },
@@ -95,12 +93,12 @@ export default defineComponent({
         {
           element: "estado",
           type: "select",
+          required: false,
+          label: "Estado",
           options: [
             { value: "pendiente", label: "Pendiente" },
             { value: "entregado", label: "Entregado" },
           ],
-          required: false,
-          label: "Estado",
         },
         {
           element: "departamento_solicitante",
@@ -116,13 +114,13 @@ export default defineComponent({
         },
         {
           element: "fecha_solicitud",
-          type: "text",
+          type: "date",
           required: false,
           label: "Fecha solicitud",
         },
         {
           element: "fecha_entregado",
-          type: "text",
+          type: "date",
           required: false,
           label: "Fecha de entregado",
         },

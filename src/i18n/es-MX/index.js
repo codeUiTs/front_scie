@@ -2,6 +2,11 @@ export default {
   failed: 'Acción fallida',
   success: 'Acción exitosa',
   noMenu: 'Navega por la aplicación para ver el menú ',
+  generic: {
+    noData: "No encontré nada para ti",
+    noFilterData: "El filtro no encontró coincidencias",
+    noFiltered: "Tristemente"
+  },
   loginForm: {
     user: "Usuario",
     password: "Contraseña",
@@ -32,7 +37,8 @@ export default {
     config: 'Configuración',
   },
   config: {
-    users: "Usuarios"
+    users: "Usuarios",
+    import: "Importación de datos"
   },
   payroll: {
     incidents: "Incidencias",

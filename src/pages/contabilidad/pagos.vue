@@ -3,12 +3,12 @@
     <GenericTable
       v-if="getterData.length > 0"
       ref="child"
-      :table-title="'Pagos'"
+      :table-title="$t('accounting.payments')"
       :form-config="formConfig"
       :title-export="'users'"
       :getter-data="getterData"
       :api-route="'pagos/'"
-      :front-route="'/contabilidad/pagos'"
+      :front-route="'/contabilidad/pago'"
       v-on:sync:data="getData($event)"
       v-on:send:put="putRecord($event)"
       v-on:send:post="postRecord($event)"
@@ -72,7 +72,7 @@ export default defineComponent({
         },
         {
           element: "fecha_pago",
-          type: "text",
+          type: "date",
           required: false,
           skipList: false,
           label: "Fecha de Pago",

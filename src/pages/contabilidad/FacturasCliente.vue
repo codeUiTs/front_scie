@@ -3,7 +3,7 @@
     <GenericTable
       v-if="getterData.length > 0"
       ref="child"
-      :table-title="'Facturas Cliente'"
+      :table-title="$t('accounting.customerInvoices')"
       :form-config="formConfig"
       :title-export="'facturas-cliente'"
       :getter-data="getterData"
@@ -48,7 +48,7 @@ export default defineComponent({
         },
         {
           element: "fecha_factura",
-          type: "text",
+          type: "date",
           label: "Fecha de la factura",
           required: false,
         },
@@ -60,7 +60,7 @@ export default defineComponent({
         },
         {
           element: "fecha_vencimiento",
-          type: "text",
+          type: "date",
           label: "Fecha de vencimiento",
           required: false,
         },
@@ -72,9 +72,31 @@ export default defineComponent({
         },
         {
           element: "estado",
-          type: "text",
+          type: "select",
           label: "Estado",
           required: false,
+          options: [
+            {
+              value: "Paid",
+              label: "Paid",
+            },
+            {
+              value: "Draft",
+              label: "Draft",
+            },
+            {
+              value: "Cancel",
+              label: "Cancel",
+            },
+            {
+              value: "Process",
+              label: "Process",
+            },
+            {
+              value: "Invoiced",
+              label: "Invoiced",
+            },
+          ],
         },
       ],
     };
@@ -98,17 +120,20 @@ export default defineComponent({
       }
     },
     async putRecord(ev) {
-      console.log(ev);
       try {
         await this.fcStore.putfc(ev.rows.id, ev.formData);
         await this.getData();
       } catch (error) {
-        console.error(error);
         if (error.response.data.error) {
-          this.quasar.notify({
-            type: "negative",
-            message: error.response.data.error,
-          });
+          let msg = error.response.data.error;
+          let keys = Object.keys(msg);
+          for (let index = 0; index < keys.length; index++) {
+            this.quasar.notify({
+              type: "negative",
+              position: "bottom",
+              message: `${keys[index].toUpperCase()}: ${msg[keys[index]]}`,
+            });
+          }
         }
       }
     },
@@ -118,8 +143,8 @@ export default defineComponent({
         this.$refs.child.cancel();
         await this.getData();
       } catch (error) {
-        if (error.response.data.errors) {
-          let msg = error.response.data.errors;
+        if (error.response.data.error) {
+          let msg = error.response.data.error;
           let keys = Object.keys(msg);
           for (let index = 0; index < keys.length; index++) {
             this.quasar.notify({

@@ -14,24 +14,32 @@ export const usefcStore = defineStore('fc', {
       await api.get('facturas-cliente/').then(response => {
         const fcsList = response.data
         this.fcsList = fcsList
+      }).catch((error) => {
+        return Promise.reject(error)
       })
     },
     async postfc(payload) {
       await api.post('facturas-cliente/', payload).then(response => {
         const fcsList = response.data
         this.fcsList = fcsList
+      }).catch((error) => {
+        return Promise.reject(error)
       })
     },
     async putfc(id, payload) {
       await api.put(`facturas-cliente/${id}/`, payload).then(response => {
         const fcsList = response.data
         this.fcsList = fcsList
+      }).catch((error) => {
+        return Promise.reject(error)
       })
     },
     async deletefc(id) {
       await api.delete(`facturas-cliente/${id}/`).then(response => {
         const fcsList = response.data
         this.fcsList = fcsList
+      }).catch((error) => {
+        return Promise.reject(error)
       })
     },
   }

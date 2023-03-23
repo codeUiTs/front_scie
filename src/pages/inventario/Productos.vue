@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <q-table
-      title="Productos"
+      :title="$t('inventory.products')"
       v-show="!create"
       :tittle="tableTitle"
       :rows="genericRows"

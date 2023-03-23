@@ -1,9 +1,8 @@
 <template>
   <q-page>
     <GenericTable
-      v-if="getterData.length > 0"
       ref="child"
-      :table-title="'Libro Diario'"
+      :table-title="$t('accounting.diaryBook')"
       :form-config="formConfig"
       :title-export="'lbs'"
       :getter-data="getterData"

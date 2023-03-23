@@ -68,6 +68,7 @@
 
 <script>
 import Track from "src/utils/js/TrackVisibility";
+import { api } from "src/boot/axios";
 export default {
   name: "commits-component",
   props: {
@@ -88,6 +89,7 @@ export default {
       require: true,
     },
     destination_url: {
+      tyoe: String,
       require: true,
     },
   },
@@ -109,22 +111,33 @@ export default {
         width: "8px",
         opacity: 0.2,
       },
+      rObject: [],
     };
   },
   computed: {},
   methods: {
     async AddComment() {
-      let r_object = Track.TrackVisibility(
+      let r_object = await Track.TrackVisibility(
         "comment",
         this.track_visibility,
         this.form_data_original,
         this.form_data,
         this.add_comment
       );
-      // if (PutAction) {
-      //     this.add_comment = ''
-      //     this.TipoCuentaRequest()
-      // }
+      this.rObject = JSON.stringify(r_object);
+      this.postComment();
+    },
+    postComment() {
+      let formData = new FormData();
+      formData.append("r_object", this.rObject);
+      api
+        .patch(this.destination_url, formData)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
 };

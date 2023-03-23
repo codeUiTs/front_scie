@@ -3,7 +3,7 @@
     <GenericTable
       v-if="getterData.length > 0"
       ref="child"
-      :table-title="'Facturas Proveedor'"
+      :table-title="$t('accounting.supplierInvoices')"
       :form-config="formConfig"
       :title-export="'facturas-proveedor'"
       :getter-data="getterData"

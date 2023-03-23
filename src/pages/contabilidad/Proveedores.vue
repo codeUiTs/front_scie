@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <q-table
-      title="Proveedores"
+      :title="$t('accounting.suppliers')"
       v-show="!create"
       :tittle="tableTitle"
       :rows="genericRows"

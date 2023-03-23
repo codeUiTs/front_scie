@@ -91,6 +91,11 @@ export const configList = [
     icon: "person",
     link: "user",
   },
+  {
+    title: "config.import",
+    icon: "cloud_upload",
+    link: "importar",
+  },
 ];
 export const noMenu = [
   {

@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <q-table
-      title="Productos vendibles"
+      :title="$t('accounting.salableProducts')"
       v-show="!create"
       :tittle="tableTitle"
       :rows="genericRows"

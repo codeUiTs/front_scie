@@ -97,6 +97,11 @@ const routes = [
               requiresViewPermission: true
             }
           },
+          {
+            name: "importar",
+            path: "importar",
+            component: () => import("pages/Config/DragAndDrop.vue")
+          },
         ]
       },
     ],

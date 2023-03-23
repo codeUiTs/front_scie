@@ -7,8 +7,8 @@
       :columns="genericColumns"
       row-key="id"
       :filter="filter"
-      no-data-label="I didn't find anything for you"
-      no-results-label="The filter didn't uncover any results"
+      :no-data-label="$t('generic.noData')"
+      :no-results-label="$t('generic.noFilterData')"
     >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
@@ -73,9 +73,9 @@
         </q-tr>
       </template>
       <template v-slot:no-data="{ icon, message, filter }">
-        <div class="full-width row flex-center text-accent q-gutter-sm">
+        <div class="full-width row flex-center text-error q-gutter-sm">
           <q-icon size="2em" name="sentiment_dissatisfied" />
-          <span> Well this is sad... {{ message }} </span>
+          <span> {{ $t("generic.noFiltered") }}... {{ message }} </span>
           <q-icon size="2em" :name="filter ? 'filter_b_and_w' : icon" />
         </div>
       </template>
@@ -151,7 +151,7 @@
                     map-options
                     lazy-rules
                     :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
-                    style="width: 250px"
+                    style="width: 100px"
                   />
                   <q-select
                     v-else
@@ -164,6 +164,7 @@
                     option-label="label"
                     emit-value
                     map-options
+                    style="width: 100px"
                   />
                 </div>
                 <div v-if="item.type == 'checkbox'">
@@ -183,6 +184,29 @@
                     dense
                     :label="`${item.label}`"
                   />
+                </div>
+                <div v-if="item.type == 'date'">
+                  <q-input filled v-model="form_data[item.key]" :label="item.label">
+                    <template v-slot:append>
+                      <q-icon name="event" class="cursor-pointer">
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            v-model="form_data[item.key]"
+                            color="accent"
+                            mask="YYYY-MM-DD"
+                          >
+                            <div class="row items-center justify-end">
+                              <q-btn v-close-popup label="Close" color="accent" flat />
+                            </div>
+                          </q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
                 </div>
               </div>
             </div>
@@ -282,7 +306,6 @@ export default defineComponent({
   mounted() {},
 
   computed: {
-    // ...mapState(CatalogoStore, ["getterConfigForm"]),
     genericRows() {
       this.getCheckBox();
       if (this.getterData != null) {

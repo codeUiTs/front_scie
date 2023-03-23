@@ -1,10 +1,12 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
   failed: 'Action failed',
   success: 'Action was successful',
   noMenu: 'Browse the app to see the menu',
+  generic: {
+    noData: "I didn't find anything for you",
+    noFilterData: "The filter didn't uncover any results",
+    noFiltered: "Well this is sad"
+  },
   loginForm: {
     user: "Username",
     password: "Password",
@@ -35,7 +37,9 @@ export default {
     config: 'Settings',
   },
   config: {
-    users: "Users"
+    users: "Users",
+    import: "Data Import"
+
   },
   payroll: {
     incidents: "Incidents",
