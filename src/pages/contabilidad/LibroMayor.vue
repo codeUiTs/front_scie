@@ -71,6 +71,7 @@
             icon="description"
             label="PDF"
             text-color="black"
+            @click="downloadReport()"
           ></q-btn>
           <q-btn size="md" color="red" label="Cancelar"></q-btn>
         </div>
@@ -81,12 +82,28 @@
 
 <script>
 import { ref } from "vue";
+import { api } from "src/boot/axios";
 
 export default {
   setup() {
     return {
       toolbar: ref(false),
     };
+  },
+  methods: {
+    downloadReport() {
+      api
+        .get("facturas-cliente/generateReport/")
+        .then((resp) => {
+          const type = resp.headers["content-type"];
+          const blob = new Blob([resp.data], { type: type, encoding: "UTF-8" });
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = "Libro Mayor.pdf";
+          link.click();
+        })
+        .catch((err) => console.error(err));
+    },
   },
 };
 </script>

@@ -1,81 +1,68 @@
 <template>
   <q-page class="q-pa-md">
-    <q-table
-      :title="$t('accounting.suppliers')"
-      v-show="!create"
-      :tittle="tableTitle"
-      :rows="genericRows"
-      :columns="genericColumns"
-      row-key="id"
-      :filter="filter"
-      grid
-    >
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-        <q-btn flat color="accent" size="sm" icon="download" />
-        <q-btn flat color="accent" icon="sync" size="sm" @click="getData()" />
-        <q-btn flat rounded color="accent" icon="add" size="sm" />
-      </template>
-      <template v-slot:item="props">
-        <div class="q-pa-xs col-md-4">
-          <q-card>
-            <div class="q-pa-md flex">
-              <q-img
-                src="src/assets/avatar.svg"
-                spinner-color="white"
-                width="90px"
-                img-class="my-custom-image"
-                class="rounded-borders"
-              />
-              <br />
-              <q-card-section class="q-pa-md">
-                <q-item-label caption class="text-grey q-mx-md"> Nombre </q-item-label>
-                <br />
-                <q-item-label style="fontsize: 12px" class="q-mx-md"
-                  >{{ props.row.nombre }} <br />
-                </q-item-label>
-              </q-card-section>
-            </div>
-          </q-card>
-        </div>
-      </template>
-    </q-table>
+    <GenericGridTable
+      ref="child"
+      :table-title="$t('accounting.suppliers')"
+      :form-config="formConfig"
+      :title-export="$t('accounting.suppliers')"
+      :getter-data="getterData"
+      :api-route="'proveedor/'"
+      :front-route="'/contabilidad/proveedor'"
+      v-on:sync:data="getData($event)"
+      v-on:send:put="putRecord($event)"
+      v-on:send:post="postRecord($event)"
+      v-on:send:del="deleteRecord($event)"
+      v-on:enable:create="create = $event"
+    />
   </q-page>
 </template>
 
 <script>
 import { ref } from "vue";
-import { useProductosVendiblesStore } from "src/stores/productosVendibles/productosVendibles";
+import { useProveedoresStore } from "src/stores/proveedores/proveedores";
+import GenericGridTable from "src/components/custom/GenericGridTable.vue";
 export default {
   name: "proveedoresPage",
+  components: {
+    GenericGridTable,
+  },
   setup() {
-    const PvStore = useProductosVendiblesStore();
+    const proveedorStore = useProveedoresStore();
 
     return {
-      PvStore,
+      proveedorStore,
     };
   },
   data() {
     return {
       filter: ref(""),
-      genericRows: [],
+      getterData: [],
       genericColumns: [
-        // {
-        //   name: "imagen",
-        //   label: "Imágen",
-        //   sortable: true,
-        //   field: "imagen",
-        //   skipList: true,
-        // },
         {
           name: "nombre",
           label: "Nombre",
           sortable: true,
           field: "nombre",
+        },
+      ],
+      formConfig: [
+        {
+          element: "nombre",
+          type: "text",
+          required: true,
+          label: "Nombre",
+        },
+        {
+          element: "direccion",
+          type: "text",
+          required: true,
+          label: "Dirección",
+        },
+        {
+          element: "email",
+          type: "text",
+          required: false,
+          label: "Email",
         },
       ],
     };
@@ -86,9 +73,9 @@ export default {
   methods: {
     async getData() {
       try {
-        await this.PvStore.fetchProductosVendibless();
-        this.getterData = this.PvStore.getProductosVendibless;
-        this.genericRows = this.getterData;
+        await this.proveedorStore.fetchProveedores();
+        this.getterData = this.proveedorStore.getProveedores;
+        this.getterData = this.getterData;
       } catch (err) {
         if (err.response.data.error) {
           this.quasar.notify({
@@ -96,6 +83,49 @@ export default {
             message: err.response.data.error,
           });
         }
+      }
+    },
+    async putRecord(ev) {
+      console.log(ev);
+      try {
+        await this.proveedorStore.putProveedores(ev.rows.id, ev.formData);
+        await this.getData();
+      } catch (error) {
+        console.error(error);
+        if (error.response.data.error) {
+          this.quasar.notify({
+            type: "negative",
+            message: error.response.data.error,
+          });
+        }
+      }
+    },
+    async postRecord(ev) {
+      try {
+        await this.proveedorStore.postProveedores(ev);
+        this.$refs.child.cancel();
+        await this.getData();
+      } catch (error) {
+        if (error.response.data.errors) {
+          let msg = error.response.data.errors;
+          let keys = Object.keys(msg);
+          for (let index = 0; index < keys.length; index++) {
+            this.quasar.notify({
+              type: "negative",
+              position: "bottom",
+              message: `${keys[index].toUpperCase()}: ${msg[keys[index]]}`,
+            });
+          }
+        }
+      }
+    },
+    async deleteRecord(ev) {
+      try {
+        await this.proveedorStore.deleteProveedores(ev);
+        this.$refs.child.cancel();
+        this.getData();
+      } catch (error) {
+        console.error(error);
       }
     },
   },

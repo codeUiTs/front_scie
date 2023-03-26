@@ -29,6 +29,7 @@ export const accountingList = [
   {
     title: "accounting.accountingPlan",
     icon: "account_balance_wallet",
+    link: "planContable",
   },
 
   {
@@ -43,11 +44,11 @@ export const accountingList = [
     link: "libroMayor"
   },
 
-  {
-    title: "accounting.diaryBook",
-    icon: "auto_stories",
-    link: "libroDiario"
-  },
+  // {
+  //   title: "accounting.diaryBook",
+  //   icon: "auto_stories",
+  //   link: "libroDiario"
+  // },
 
   {
     title: "accounting.spJournal",
@@ -75,10 +76,10 @@ export const inventoryList = [
     title: "inventory.inventoryOutputs",
     icon: "door_sliding",
   },
-  {
-    title: "inventory.planner",
-    icon: "pending_actions",
-  },
+  // {
+  //   title: "inventory.planner",
+  //   icon: "pending_actions",
+  // },
   {
     title: "inventory.inventoryReport",
     icon: "summarize",

@@ -19,9 +19,10 @@
                   <div class="grid">
                     <img
                       v-if="!user.avatar"
-                      src="https://cdn.quasar.dev/img/boy-avatar.png"
+                      src="src/assets/avatar.svg"
                       :alt="user.name"
                       class="q-message-avatar"
+                      style="height: 10vh"
                     />
                     <img
                       v-if="user.avatar"

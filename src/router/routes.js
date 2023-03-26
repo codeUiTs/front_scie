@@ -48,11 +48,19 @@ const routes = [
             name: "productoVendible",
             path: "productoVendible",
             component: () => import("src/pages/contabilidad/ProductosVendibles.vue"),
+            meta: {
+              requiresViewPermission: false
+            }
           },
           {
             name: "reporteFinanciero",
             path: "reporteFinanciero",
             component: () => import("pages/contabilidad/ReporteFinanciero.vue"),
+          },
+          {
+            name: "planContable",
+            path: "planContable",
+            component: () => import("pages/contabilidad/PlanContable.vue"),
           },
           {
             name: "diarioVentasCompras",
