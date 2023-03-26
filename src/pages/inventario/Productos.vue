@@ -1,53 +1,45 @@
 <template>
   <q-page class="q-pa-md">
-    <q-table
-      :title="$t('inventory.products')"
-      v-show="!create"
-      :tittle="tableTitle"
-      :rows="genericRows"
-      :columns="genericColumns"
-      row-key="id"
-      :filter="filter"
-      grid
-    >
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-        <q-btn flat color="accent" size="sm" icon="download" />
-        <q-btn flat color="accent" icon="sync" size="sm" @click="getData()" />
-        <q-btn flat rounded color="accent" icon="add" size="sm" />
-      </template>
-    </q-table>
+    <GenericGridTable
+      ref="child"
+      :table-title="$t('inventory.products')"
+      :form-config="formConfig"
+      :title-export="$t('inventory.products')"
+      :getter-data="getterData"
+      :api-route="'producto/'"
+      :front-route="'/inventario/producto'"
+      v-on:sync:data="getData($event)"
+      v-on:send:put="putRecord($event)"
+      v-on:send:post="postRecord($event)"
+      v-on:send:del="deleteRecord($event)"
+      v-on:enable:create="create = $event"
+    />
   </q-page>
 </template>
 
 <script>
 import { ref } from "vue";
-import { useProductosVendiblesStore } from "src/stores/productosVendibles/productosVendibles";
+import { useProductosStore } from "src/stores/productos/productos";
+import GenericGridTable from "src/components/custom/GenericGridTable.vue";
+
 export default {
   name: "productosPage",
+  components: {
+    GenericGridTable,
+  },
   setup() {
-    const PvStore = useProductosVendiblesStore();
+    const ProductoStore = useProductosStore();
 
     return {
-      PvStore,
+      ProductoStore,
     };
   },
   data() {
     return {
       filter: ref(""),
       genericRows: [],
+      getterData: [],
       genericColumns: [
-        // {
-        //   name: "imagen",
-        //   label: "Imágen",
-        //   sortable: true,
-        //   field: "imagen",
-        //   skipList: true,
-        // },
         {
           name: "nombre",
           label: "Nombre",
@@ -67,6 +59,38 @@ export default {
           field: "unidades_disponibles",
         },
       ],
+      formConfig: [
+        {
+          element: "nombre",
+          type: "text",
+          required: true,
+          label: "Nombre",
+        },
+        {
+          element: "precio_unitario",
+          type: "number",
+          required: true,
+          label: "Precio Unitario",
+        },
+        {
+          element: "unidades_disponibles",
+          type: "text",
+          required: false,
+          label: "Unidades Disponibles",
+        },
+        {
+          element: "vendible",
+          type: "checkbox",
+          required: false,
+          label: "Vendible",
+        },
+        {
+          element: "comprable",
+          type: "checkbox",
+          required: false,
+          label: "Comprable",
+        },
+      ],
     };
   },
   mounted() {
@@ -75,9 +99,8 @@ export default {
   methods: {
     async getData() {
       try {
-        await this.PvStore.fetchProductosVendibless();
-        this.getterData = this.PvStore.getProductosVendibless;
-        this.genericRows = this.getterData;
+        await this.ProductoStore.fetchProductos();
+        this.getterData = this.ProductoStore.getProductos;
       } catch (err) {
         if (err.response.data.error) {
           this.quasar.notify({
@@ -85,6 +108,50 @@ export default {
             message: err.response.data.error,
           });
         }
+      }
+    },
+
+    async putRecord(ev) {
+      console.log(ev);
+      try {
+        await this.ProductoStore.putProductos(ev.rows.id, ev.formData);
+        await this.getData();
+      } catch (error) {
+        console.error(error);
+        if (error.response.data.error) {
+          this.quasar.notify({
+            type: "negative",
+            message: error.response.data.error,
+          });
+        }
+      }
+    },
+    async postRecord(ev) {
+      try {
+        await this.ProductoStore.postProductos(ev);
+        this.$refs.child.cancel();
+        await this.getData();
+      } catch (error) {
+        if (error.response.data.errors) {
+          let msg = error.response.data.errors;
+          let keys = Object.keys(msg);
+          for (let index = 0; index < keys.length; index++) {
+            this.quasar.notify({
+              type: "negative",
+              position: "bottom",
+              message: `${keys[index].toUpperCase()}: ${msg[keys[index]]}`,
+            });
+          }
+        }
+      }
+    },
+    async deleteRecord(ev) {
+      try {
+        await this.ProductoStore.deleteProductos(ev);
+        this.$refs.child.cancel();
+        this.getData();
+      } catch (error) {
+        console.error(error);
       }
     },
   },

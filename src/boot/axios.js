@@ -4,17 +4,16 @@ import { Loading, QSpinnerBars } from 'quasar';
 
 const api = axios.create({
   baseURL: 'http://127.0.0.1:8000', timeout: 9000,
-  onDownloadProgress: async (progressEvent) => {
+  onDownloadProgress: (progressEvent) => {
     const { loaded, total } = progressEvent;
     let percent = Math.floor((loaded * 100) / total);
-
 
     Loading.show({
       spinner: QSpinnerBars,
       spinnerColor: "accent",
       message: `${loaded} bytes of ${total} bytes. ${percent}%`,
     });
-    await setTimeout(() => Loading.hide(), 1200)
+    setTimeout(() => Loading.hide(), 900)
   }
 })
 

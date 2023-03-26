@@ -7,6 +7,7 @@
       :form-config="formConfig"
       :title-export="'facturas-cliente'"
       :getter-data="getterData"
+      :delete-keys="deleteKeys"
       :api-route="'facturas-cliente/'"
       :front-route="'/contabilidad/facturaCliente'"
       v-on:sync:data="getData($event)"
@@ -39,13 +40,9 @@ export default defineComponent({
     return {
       data: [],
       getterData: [],
+      clientes: [],
+      deleteKeys: ["producto"],
       formConfig: [
-        {
-          element: "cliente",
-          type: "text",
-          label: "Cliente",
-          required: true,
-        },
         {
           element: "fecha_factura",
           type: "date",
@@ -110,6 +107,7 @@ export default defineComponent({
       try {
         await this.fcStore.fetchfcs();
         this.getterData = this.fcStore.getfcs;
+        this.createSelect();
       } catch (err) {
         if (err.response.data.error) {
           this.quasar.notify({
@@ -164,6 +162,37 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
+    },
+
+    async createSelect() {
+      try {
+        this.clientes = [];
+        await this.fcStore.fetchClientes();
+        let clientes = this.fcStore.getClientes;
+        clientes.forEach(this.setClientes);
+        this.formConfig.push({
+          element: "cliente",
+          type: "select",
+          multiple: false,
+          label: "Cliente",
+          required: true,
+          options: this.clientes,
+        });
+      } catch (error) {
+        if (err.response.data.error) {
+          this.quasar.notify({
+            type: "negative",
+            message: err.response.data.error,
+          });
+        }
+      }
+    },
+
+    setClientes(element, index) {
+      this.clientes.push({
+        value: element.id,
+        label: String(element.nombre),
+      });
     },
   },
 });

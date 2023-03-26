@@ -9,6 +9,7 @@
       :filter="filter"
       :no-data-label="$t('generic.noData')"
       :no-results-label="$t('generic.noFilterData')"
+      grid
     >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
@@ -26,51 +27,14 @@
         <q-btn flat color="accent" icon="sync" size="sm" @click="syncData" />
         <q-btn flat rounded color="accent" icon="add" size="sm" @click="create = true" />
       </template>
-      <template v-slot:body="props">
-        <q-tr clickable :props="props" @click="SelectItem(props.row)">
-          <q-td v-for="item in genericKeys" :key="item" :props="props">
-            <div v-if="cbIsObject">
-              <div v-for="cb in checkBox" :key="cb">
-                <div v-if="item != cb">
-                  {{ props.row[item] }}
-                </div>
-                <q-icon
-                  size="sm"
-                  v-if="item == cb"
-                  v-show="props.row[cb] == 'true'"
-                  name="check_box"
-                  color="positive"
-                />
-                <q-icon
-                  size="sm"
-                  v-if="item == cb"
-                  v-show="props.row[cb] == 'false'"
-                  name="disabled_by_default"
-                  color="negative"
-                />
-              </div>
-            </div>
-            <div v-else>
-              <div v-if="item != checkBox">
-                {{ props.row[item] }}
-              </div>
-              <q-icon
-                size="sm"
-                v-if="item == checkBox"
-                v-show="props.row[checkBox] == 'true'"
-                name="check_box"
-                color="positive"
-              />
-              <q-icon
-                size="sm"
-                v-if="item == checkBox"
-                v-show="props.row[checkBox] == 'false'"
-                name="disabled_by_default"
-                color="negative"
-              />
-            </div>
-          </q-td>
-        </q-tr>
+      <template v-slot:item="props">
+        <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
+          <q-card @click="SelectItem(props.row)" style="height: 11vh; cursor: pointer">
+            <q-card-section>
+              <strong style="fontsize: 10px">{{ props.row.nombre }} </strong>
+            </q-card-section>
+          </q-card>
+        </div>
       </template>
       <template v-slot:no-data="{ icon, message, filter }">
         <div class="full-width row flex-center text-error q-gutter-sm">
@@ -127,7 +91,6 @@
                     :label="`${item.label} *`"
                     lazy-rules
                     :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
-                    style="min-width: 150px"
                   />
                   <q-input
                     v-else
@@ -136,7 +99,6 @@
                     filled
                     dense
                     :label="item.key"
-                    style="min-width: 150px"
                   />
                 </div>
                 <div v-if="item.type == 'select'">
@@ -146,16 +108,14 @@
                     :options="item.options"
                     filled
                     dense
-                    clearable
-                    :multiple="item.multiple"
                     :label="`${item.label} *`"
                     option-value="value"
                     option-label="label"
                     emit-value
                     map-options
                     lazy-rules
-                    :rules="[(val) => val || 'Campo requerido']"
-                    style="min-width: 100px"
+                    :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
+                    style="width: 100px"
                   />
                   <q-select
                     v-else
@@ -163,20 +123,19 @@
                     :options="item.options"
                     filled
                     dense
-                    clearable
-                    :multiple="item.multiple"
                     :label="item.label"
                     option-value="value"
                     option-label="label"
                     emit-value
                     map-options
-                    style="min-width: 100px"
+                    style="width: 100px"
                   />
                 </div>
                 <div v-if="item.type == 'checkbox'">
                   <q-checkbox
                     v-if="item.required == true"
                     v-model="form_data[item.key]"
+                    color="accent"
                     filled
                     dense
                     :label="`${item.label} *`"
@@ -186,18 +145,14 @@
                   <q-checkbox
                     v-else
                     v-model="form_data[item.key]"
+                    color="accent"
                     filled
                     dense
                     :label="`${item.label}`"
                   />
                 </div>
                 <div v-if="item.type == 'date'">
-                  <q-input
-                    filled
-                    v-model="form_data[item.key]"
-                    :label="item.label"
-                    style="min-width: 100px"
-                  >
+                  <q-input filled v-model="form_data[item.key]" :label="item.label">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy
@@ -272,8 +227,6 @@
   </div>
 </template>
 <script>
-// import { mapState } from "pinia";
-// import { CatalogoStore } from "src/stores/contabilidad/CatalogoStore";
 import Export from "src/utils/js/ExportTable";
 import Track from "src/utils/js/TrackVisibility";
 import OM from "src/utils/js/ObjectManager";
@@ -281,7 +234,7 @@ import { defineComponent, ref } from "vue";
 import CommitsComponent from "src/components/custom/CommitsComponent.vue";
 
 export default defineComponent({
-  name: "categoria_activo",
+  name: "genericGrid",
   props: {
     getterData: Object,
     deleteKeys: Array,

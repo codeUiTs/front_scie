@@ -29,7 +29,13 @@
       </div>
       <q-card-actions v-show="file.name" align="center">
         <q-btn flat color="negative" label="Eliminar" @click="removeFile()" />
-        <q-btn flat color="accent" label="Guardar" @click="submitFile()" />
+        <q-btn
+          v-show="backModule"
+          flat
+          color="accent"
+          label="Guardar"
+          @click="submitFile()"
+        />
         <q-btn flat color="amber" label="Vista Previa" @click="preview()" />
       </q-card-actions>
     </q-card>

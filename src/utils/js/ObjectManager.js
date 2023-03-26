@@ -61,6 +61,7 @@ const ObjectCreatorForm = (config = null, data) => {
         val.required = item.required
         val.label = label
         if (item.type == "select") {
+          val.multiple = item.multiple
           let options = { options: [] }
           for (let [ky, vl] of Object.entries(item.options)) {
             options.options[ky] = {

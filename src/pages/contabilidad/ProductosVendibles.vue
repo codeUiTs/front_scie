@@ -26,11 +26,11 @@
 
 <script>
 import { ref } from "vue";
-import { useProductosVendiblesStore } from "src/stores/productosVendibles/productosVendibles";
+import { useProductosStore } from "src/stores/productos/productos";
 export default {
   name: "productosVendibles",
   setup() {
-    const PvStore = useProductosVendiblesStore();
+    const PvStore = useProductosStore();
 
     return {
       PvStore,
@@ -41,13 +41,6 @@ export default {
       filter: ref(""),
       genericRows: [],
       genericColumns: [
-        // {
-        //   name: "imagen",
-        //   label: "Imágen",
-        //   sortable: true,
-        //   field: "imagen",
-        //   skipList: true,
-        // },
         {
           name: "nombre",
           label: "Nombre",
@@ -75,8 +68,8 @@ export default {
   methods: {
     async getData() {
       try {
-        await this.PvStore.fetchProductosVendibless();
-        this.getterData = this.PvStore.getProductosVendibless;
+        await this.PvStore.fetchProductosVendibles();
+        this.getterData = this.PvStore.getProductosVendibles;
         this.genericRows = this.getterData;
       } catch (err) {
         if (err.response.data.error) {

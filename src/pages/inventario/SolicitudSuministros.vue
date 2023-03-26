@@ -24,6 +24,7 @@ import { defineComponent } from "vue";
 import GenericTable from "src/components/custom/GenericTable.vue";
 import SolicitudSuministrosTable from "src/components/custom/SolicitudSuministrosTable.vue";
 import { useSolicitudStore } from "src/stores/solicitudSuministros/solicitudStore";
+import { useProductosStore } from "src/stores/productos/productos";
 
 export default defineComponent({
   name: "SolicitudPage",
@@ -33,9 +34,11 @@ export default defineComponent({
   },
   setup() {
     const solicitudStore = useSolicitudStore();
+    const ProductoStore = useProductosStore();
     const quasar = useQuasar();
     return {
       solicitudStore,
+      ProductoStore,
       quasar,
     };
   },
@@ -45,84 +48,30 @@ export default defineComponent({
       data: [],
       rows: [],
       getterData: [],
+      productos: [],
       formConfig: [
-        {
-          element: "producto_solicitado",
-          type: "text",
-          required: true,
-          label: "Producto solicitado",
-        },
-        {
-          element: "ubicacion",
-          type: "text",
-          required: false,
-          label: "Ubicación",
-        },
-        {
-          element: "fecha_estimada",
-          type: "date",
-          required: true,
-          label: "Fecha estimada de entrega",
-        },
-        {
-          element: "fecha_salida",
-          type: "date",
-          required: true,
-          label: "Fecha de salida",
-        },
-        {
-          element: "pendiente",
-          type: "checkbox",
-          required: false,
-          label: "Pendiente",
-        },
-
-        {
-          element: "area_destino",
-          label: "Área destino",
-          type: "text",
-          required: false,
-        },
-
-        {
-          element: "tipo",
-          type: "text",
-          required: false,
-          label: "Tipo",
-        },
+        // {
+        //   element: "producto_solicitado",
+        //   type: "text",
+        //   required: true,
+        //   label: "Producto solicitado",
+        // },
+        // {
+        //   element: "producto_entregado",
+        //   type: "text",
+        //   required: true,
+        //   label: "Producto solicitado",
+        // },
         {
           element: "estado",
           type: "select",
           required: false,
           label: "Estado",
+          multiple: false,
           options: [
             { value: "pendiente", label: "Pendiente" },
             { value: "entregado", label: "Entregado" },
           ],
-        },
-        {
-          element: "departamento_solicitante",
-          type: "text",
-          required: false,
-          label: "Departamento solicitante",
-        },
-        {
-          element: "edificio",
-          type: "text",
-          required: false,
-          label: " Edificio",
-        },
-        {
-          element: "fecha_solicitud",
-          type: "date",
-          required: false,
-          label: "Fecha solicitud",
-        },
-        {
-          element: "fecha_entregado",
-          type: "date",
-          required: false,
-          label: "Fecha de entregado",
         },
       ],
     };
@@ -136,6 +85,7 @@ export default defineComponent({
         await this.solicitudStore.fetchSolicitud();
         this.getterData = this.solicitudStore.getSolicitud;
         this.rows = this.solicitudStore.getSolicitud;
+        this.createSelect();
       } catch (err) {
         if (err.response.data.error) {
           this.quasar.notify({
@@ -188,6 +138,45 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
+    },
+
+    async createSelect() {
+      try {
+        this.productos = [];
+        await this.ProductoStore.fetchProductos();
+        let productos = this.ProductoStore.getProductos;
+        productos.forEach(this.setproductos);
+        this.formConfig.push({
+          element: "producto_solicitado",
+          type: "select",
+          multiple: false,
+          label: "Producto Solicitado",
+          required: true,
+          options: this.productos,
+        });
+        this.formConfig.push({
+          element: "producto_entregado",
+          type: "select",
+          multiple: false,
+          label: "Producto Entregado",
+          required: true,
+          options: this.productos,
+        });
+      } catch (error) {
+        if (err.response.data.error) {
+          this.quasar.notify({
+            type: "negative",
+            message: err.response.data.error,
+          });
+        }
+      }
+    },
+
+    setproductos(element, index) {
+      this.productos.push({
+        value: element.id,
+        label: String(element.nombre),
+      });
     },
   },
 });
