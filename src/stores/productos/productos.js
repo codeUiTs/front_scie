@@ -3,12 +3,14 @@ import { api } from 'src/boot/axios';
 
 export const useProductosStore = defineStore('Productos', {
   state: () => ({
-    ProductosList: {},
-    ProductosVendiblesList: {},
-    Productos: {},
+    ProductosList: [],
+    ProductosVendiblesList: [],
+    Productos: [],
+    salidas: [],
   }),
   getters: {
     getProductos: (state) => state.ProductosList,
+    getSalidas: (state) => state.salidas,
     getProductosVendibles: (state) => state.ProductosVendiblesList,
   },
   actions: {
@@ -16,6 +18,22 @@ export const useProductosStore = defineStore('Productos', {
       await api.get('producto/').then(response => {
         const ProductosList = response.data
         this.ProductosList = ProductosList
+      }).catch((error) => {
+        return Promise.reject(error)
+      })
+    },
+    async fetchProductosByGreater() {
+      await api.get('producto/listGreaterThan/').then(response => {
+        const ProductosList = response.data
+        this.ProductosList = ProductosList
+      }).catch((error) => {
+        return Promise.reject(error)
+      })
+    },
+    async fetchSalidas() {
+      await api.get('salidaInventario/').then(response => {
+        const SalidasList = response.data
+        this.salidas = SalidasList
       }).catch((error) => {
         return Promise.reject(error)
       })

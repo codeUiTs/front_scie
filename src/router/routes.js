@@ -91,6 +91,11 @@ const routes = [
             path: "producto",
             component: () => import("pages/inventario/Productos.vue"),
           },
+          {
+            name: "salidaInventario",
+            path: "salidaInventario",
+            component: () => import("pages/inventario/SalidaInventario.vue"),
+          },
         ]
       },
       {

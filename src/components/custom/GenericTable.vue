@@ -124,6 +124,7 @@
                     :type="item.type"
                     filled
                     dense
+                    :readonly="item.readonly"
                     :label="`${item.label} *`"
                     lazy-rules
                     :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
@@ -134,6 +135,7 @@
                     :type="item.type"
                     v-model="form_data[item.key]"
                     filled
+                    :readonly="item.readonly"
                     dense
                     :label="item.key"
                     style="min-width: 150px"
@@ -145,6 +147,7 @@
                     v-model="form_data[item.key]"
                     :options="item.options"
                     filled
+                    :readonly="item.readonly"
                     dense
                     clearable
                     :multiple="item.multiple"
@@ -163,6 +166,7 @@
                     :options="item.options"
                     filled
                     dense
+                    :readonly="item.readonly"
                     clearable
                     :multiple="item.multiple"
                     :label="item.label"
@@ -196,6 +200,7 @@
                     filled
                     v-model="form_data[item.key]"
                     :label="item.label"
+                    :readonly="item.readonly"
                     style="min-width: 100px"
                   >
                     <template v-slot:append>

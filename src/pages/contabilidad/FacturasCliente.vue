@@ -5,7 +5,7 @@
       ref="child"
       :table-title="$t('accounting.customerInvoices')"
       :form-config="formConfig"
-      :title-export="'facturas-cliente'"
+      :title-export="'facturaCliente'"
       :getter-data="getterData"
       :delete-keys="deleteKeys"
       :api-route="'facturas-cliente/'"
@@ -22,6 +22,7 @@ import { defineComponent } from "vue";
 import GenericTable from "src/components/custom/GenericTable.vue";
 import { useQuasar } from "quasar";
 import { usefcStore } from "src/stores/facturasCliente/fcStore";
+import { useProductosStore } from "src/stores/productos/productos";
 
 export default defineComponent({
   name: "FacturasCliente",
@@ -30,9 +31,11 @@ export default defineComponent({
   },
   setup() {
     const fcStore = usefcStore();
+    const ProductoStore = useProductosStore();
     const quasar = useQuasar();
     return {
       fcStore,
+      ProductoStore,
       quasar,
     };
   },
@@ -41,6 +44,7 @@ export default defineComponent({
       data: [],
       getterData: [],
       clientes: [],
+      productos: [],
       deleteKeys: ["producto"],
       formConfig: [
         {
@@ -50,9 +54,9 @@ export default defineComponent({
           required: false,
         },
         {
-          element: "comercial",
+          element: "descripcion",
           type: "text",
-          label: "Nombre",
+          label: "Descripción",
           required: false,
         },
         {
@@ -62,9 +66,9 @@ export default defineComponent({
           required: false,
         },
         {
-          element: "total",
-          type: "text",
-          label: "Total",
+          element: "importe",
+          type: "number",
+          label: "Importe",
           required: false,
         },
         {
@@ -167,9 +171,13 @@ export default defineComponent({
     async createSelect() {
       try {
         this.clientes = [];
+        this.productos = [];
         await this.fcStore.fetchClientes();
+        await this.ProductoStore.fetchProductos();
         let clientes = this.fcStore.getClientes;
+        let productos = this.ProductoStore.getProductos;
         clientes.forEach(this.setClientes);
+        productos.forEach(this.setProductos);
         this.formConfig.push({
           element: "cliente",
           type: "select",
@@ -178,6 +186,15 @@ export default defineComponent({
           required: true,
           options: this.clientes,
         });
+        this.formConfig.push({
+          element: "producto",
+          type: "select",
+          multiple: false,
+          label: "Productos",
+          required: false,
+          options: this.productos,
+        });
+        console.log(this.formConfig);
       } catch (error) {
         if (err.response.data.error) {
           this.quasar.notify({
@@ -190,6 +207,13 @@ export default defineComponent({
 
     setClientes(element, index) {
       this.clientes.push({
+        value: element.id,
+        label: String(element.nombre),
+      });
+    },
+
+    setProductos(element, index) {
+      this.productos.push({
         value: element.id,
         label: String(element.nombre),
       });

@@ -3,7 +3,7 @@
     <GenericTable
       v-if="getterData.length > 0"
       ref="child"
-      :table-title="$t('accounting.payments')"
+      :table-title="$t('accounting.accountingPlan')"
       :form-config="formConfig"
       :title-export="'users'"
       :getter-data="getterData"

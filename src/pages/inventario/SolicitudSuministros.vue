@@ -50,18 +50,24 @@ export default defineComponent({
       getterData: [],
       productos: [],
       formConfig: [
-        // {
-        //   element: "producto_solicitado",
-        //   type: "text",
-        //   required: true,
-        //   label: "Producto solicitado",
-        // },
-        // {
-        //   element: "producto_entregado",
-        //   type: "text",
-        //   required: true,
-        //   label: "Producto solicitado",
-        // },
+        {
+          element: "cantidad_solicitada",
+          type: "number",
+          required: true,
+          label: "Cantidad Solicitada",
+        },
+        {
+          element: "cantidad",
+          type: "number",
+          required: true,
+          label: "Cantidad Entregada",
+        },
+        {
+          element: "producto_entregado",
+          type: "text",
+          required: true,
+          label: "Producto solicitado",
+        },
         {
           element: "estado",
           type: "select",
@@ -143,7 +149,7 @@ export default defineComponent({
     async createSelect() {
       try {
         this.productos = [];
-        await this.ProductoStore.fetchProductos();
+        await this.ProductoStore.fetchProductosByGreater();
         let productos = this.ProductoStore.getProductos;
         productos.forEach(this.setproductos);
         this.formConfig.push({

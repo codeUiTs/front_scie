@@ -60,6 +60,7 @@ const ObjectCreatorForm = (config = null, data) => {
         val.type = item.type
         val.required = item.required
         val.label = label
+        val.readonly = item.readonly
         if (item.type == "select") {
           val.multiple = item.multiple
           let options = { options: [] }

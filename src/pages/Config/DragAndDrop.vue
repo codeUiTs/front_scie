@@ -193,7 +193,6 @@ export default {
         this.file = this.$refs.selectFile.files[0];
         let form = document.getElementById("drop-form");
         form.classList.add("drag-enter");
-        console.log(this.file);
       } else {
         this.removeFile();
         Notify.create({

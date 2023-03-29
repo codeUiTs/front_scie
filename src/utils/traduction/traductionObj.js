@@ -32,11 +32,11 @@ export const accountingList = [
     link: "planContable",
   },
 
-  {
-    title: "accounting.financialReport",
-    icon: "summarize",
-    link: "reporteFinanciero",
-  },
+  // {
+  //   title: "accounting.financialReport",
+  //   icon: "summarize",
+  //   link: "reporteFinanciero",
+  // },
 
   {
     title: "accounting.ledger",
@@ -50,11 +50,11 @@ export const accountingList = [
   //   link: "libroDiario"
   // },
 
-  {
-    title: "accounting.spJournal",
-    icon: "request_quote",
-    link: "diarioVentasCompras",
-  },
+  // {
+  //   title: "accounting.spJournal",
+  //   icon: "request_quote",
+  //   link: "diarioVentasCompras",
+  // },
 ];
 
 export const inventoryList = [
@@ -75,6 +75,7 @@ export const inventoryList = [
   {
     title: "inventory.inventoryOutputs",
     icon: "door_sliding",
+    link: "salidaInventario"
   },
   // {
   //   title: "inventory.planner",

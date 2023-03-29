@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Loading, QSpinnerBars } from 'quasar';
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000', timeout: 9000,
+  baseURL: 'https://api.codeui.link', timeout: 9000,
   onDownloadProgress: (progressEvent) => {
     const { loaded, total } = progressEvent;
     let percent = Math.floor((loaded * 100) / total);
