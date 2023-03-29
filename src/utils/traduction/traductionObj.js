@@ -61,6 +61,7 @@ export const inventoryList = [
   {
     title: "inventory.transfers",
     icon: "campaign",
+    link: "Transferencias.xlsx",
   },
   {
     title: "inventory.products",
@@ -84,6 +85,7 @@ export const inventoryList = [
   {
     title: "inventory.inventoryReport",
     icon: "summarize",
+    link: "Reporte de inventario.pdf",
   },
 ];
 

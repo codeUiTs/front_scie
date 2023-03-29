@@ -8,7 +8,7 @@
       :title-export="'facturas-proveedor'"
       :getter-data="getterData"
       :api-route="'facturas-proveedor/'"
-      :front-route="'/contabilidad/facturas-proveedor'"
+      :front-route="'/contabilidad/facturaProveedor'"
       v-on:sync:data="getData($event)"
       v-on:send:put="putRecord($event)"
       v-on:send:post="postRecord($event)"
@@ -20,7 +20,8 @@
 import { defineComponent } from "vue";
 import GenericTable from "src/components/custom/GenericTable.vue";
 import { useQuasar } from "quasar";
-import { usefcStore } from "src/stores/facturasCliente/fcStore";
+import { usefpStore } from "src/stores/facturasProveedor/fpStore";
+import { useProductosStore } from "src/stores/productos/productos";
 
 export default defineComponent({
   name: "FacturasProveedor",
@@ -28,53 +29,73 @@ export default defineComponent({
     GenericTable,
   },
   setup() {
-    const fcStore = usefcStore();
+    const fpStore = usefpStore();
+    const ProductoStore = useProductosStore();
     const quasar = useQuasar();
     return {
-      fcStore,
+      fpStore,
       quasar,
+      ProductoStore,
     };
   },
   data: function () {
     return {
       data: [],
       getterData: [],
+      proveedores: [],
+      productos: [],
       formConfig: [
         {
-          element: "cliente",
-          type: "text",
-          label: "Cliente",
-          required: true,
-        },
-        {
           element: "fecha_factura",
-          type: "text",
+          type: "date",
           label: "Fecha de la factura",
           required: false,
         },
         {
-          element: "comercial",
+          element: "descripcion",
           type: "text",
-          label: "Nombre",
+          label: "Descripción",
           required: false,
         },
         {
           element: "fecha_vencimiento",
-          type: "text",
+          type: "date",
           label: "Fecha de vencimiento",
           required: false,
         },
         {
-          element: "total",
-          type: "text",
-          label: "Total",
+          element: "importe",
+          type: "number",
+          label: "Importe",
           required: false,
         },
         {
           element: "estado",
-          type: "text",
+          type: "select",
           label: "Estado",
           required: false,
+          options: [
+            {
+              value: "Paid",
+              label: "Paid",
+            },
+            {
+              value: "Draft",
+              label: "Draft",
+            },
+            {
+              value: "Cancel",
+              label: "Cancel",
+            },
+            {
+              value: "Process",
+              label: "Process",
+            },
+            {
+              value: "Invoiced",
+              label: "Invoiced",
+            },
+          ],
         },
       ],
     };
@@ -86,8 +107,9 @@ export default defineComponent({
   methods: {
     async getData() {
       try {
-        await this.fcStore.fetchfcs();
-        this.getterData = this.fcStore.getfcs;
+        await this.fpStore.fetchfps();
+        this.getterData = this.fpStore.getfps;
+        this.createSelect();
       } catch (err) {
         if (err.response.data.error) {
           this.quasar.notify({
@@ -100,7 +122,7 @@ export default defineComponent({
     async putRecord(ev) {
       console.log(ev);
       try {
-        await this.fcStore.putfc(ev.rows.id, ev.formData);
+        await this.fpStore.putfp(ev.rows.id, ev.formData);
         await this.getData();
       } catch (error) {
         console.error(error);
@@ -114,7 +136,7 @@ export default defineComponent({
     },
     async postRecord(ev) {
       try {
-        await this.fcStore.postfc(ev);
+        await this.fpStore.postfp(ev);
         this.$refs.child.cancel();
         await this.getData();
       } catch (error) {
@@ -133,12 +155,62 @@ export default defineComponent({
     },
     async deleteRecord(ev) {
       try {
-        await this.fcStore.deletefc(ev);
+        await this.fpStore.deletefp(ev);
         this.$refs.child.cancel();
         this.getData();
       } catch (error) {
         console.error(error);
       }
+    },
+
+    async createSelect() {
+      try {
+        this.proveedores = [];
+        this.productos = [];
+        await this.ProductoStore.fetchProductos();
+        await this.fpStore.fetchproveedor();
+        let proveedores = this.fpStore.getproveedor;
+        let productos = this.ProductoStore.getProductos;
+        proveedores.forEach(this.setproveedores);
+        productos.forEach(this.setProductos);
+        this.formConfig.push({
+          element: "proveedor",
+          type: "select",
+          multiple: false,
+          label: "Proveedor",
+          required: true,
+          options: this.proveedores,
+        });
+        this.formConfig.push({
+          element: "producto",
+          type: "select",
+          multiple: false,
+          label: "Productos",
+          required: false,
+          options: this.productos,
+        });
+      } catch (error) {
+        if (err.response.data.error) {
+          this.quasar.notify({
+            type: "negative",
+            message: err.response.data.error,
+          });
+        }
+      }
+    },
+
+    setproveedores(element, index) {
+      this.proveedores.push({
+        value: element.id,
+        label: String(element.nombre),
+      });
+    },
+
+    setProductos(element, index) {
+      this.productos.push({
+        value: element.id,
+        label: String(element.nombre),
+      });
     },
   },
 });

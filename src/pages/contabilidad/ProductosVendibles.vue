@@ -16,9 +16,7 @@
             <q-icon name="search" />
           </template>
         </q-input>
-        <q-btn flat color="accent" size="sm" icon="download" />
         <q-btn flat color="accent" icon="sync" size="sm" @click="getData()" />
-        <q-btn flat rounded color="accent" icon="add" size="sm" />
       </template>
     </q-table>
   </q-page>

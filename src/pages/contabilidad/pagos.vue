@@ -5,7 +5,7 @@
       ref="child"
       :table-title="$t('accounting.payments')"
       :form-config="formConfig"
-      :title-export="'users'"
+      :title-export="$t('accounting.payments')"
       :getter-data="getterData"
       :api-route="'pagos/'"
       :front-route="'/contabilidad/pago'"

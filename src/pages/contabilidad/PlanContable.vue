@@ -5,7 +5,7 @@
       ref="child"
       :table-title="$t('accounting.accountingPlan')"
       :form-config="formConfig"
-      :title-export="'users'"
+      :title-export="$t('accounting.accountingPlan')"
       :getter-data="getterData"
       :api-route="'planContable/'"
       :front-route="'/contabilidad/planContable'"
